@@ -1,0 +1,38 @@
+MIT License
+
+Copyright (c) 2026 x1247897956
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## 数据来源与许可（与代码许可是两回事）
+
+本仓库的代码以 MIT 许可发布。`data/` 目录下的语料**不适用 MIT**，其权利属于各自来源：
+
+| 语料来源 | 仓库 / 站点 | 许可 |
+| --- | --- | --- |
+| CVE List v5 | github.com/CVEProject/cvelistV5 | CVE Program Terms of Use |
+| GitHub Advisory Database | github.com/github/advisory-database | CC-BY-4.0 |
+| MITRE ATT&CK（STIX） | github.com/mitre-attack/attack-stix-data | MITRE ATT&CK Terms of Use |
+| OWASP Cheat Sheet Series | github.com/OWASP/CheatSheetSeries | CC-BY-SA-4.0 |
+
+`BAAI/bge-small-zh-v1.5`、`BAAI/bge-reranker-base` 为模型权重，遵循各自模型卡上的许可。
+
+本项目只做**只读拉取**并遵守各来源 API 条款，不含任何公司内部数据与真实个人数据。
