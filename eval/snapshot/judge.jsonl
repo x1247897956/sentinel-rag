@@ -1,71 +1,71 @@
-{"qid": "q001", "points_partial": 0.0, "points_full": 0.0, "faithful": null, "reason": "", "method": "substring", "judge_model": "deepseek-v4-pro"}
-{"qid": "q002", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答完整覆盖了CWE编号、漏洞名称、产品及版本全部要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q003", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答完整覆盖了全部四个标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q004", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了全部四个标准答案要点，且语义一致。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q005", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答中分别出现了 Assimp v.6.0.2、FBXMeshGeometry.cpp 和 MeshGeometry::MeshGeometry()，三条要点均已覆盖。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q006", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了标准答案要点的语义。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q007", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答已覆盖两条标准要点：提及EDS3000PS系列并升级到3.2.0.0R2或更高版本。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q008", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确覆盖了OpenSatKit 2.2.1、sprintf和OS_MAX_PATH_LEN三个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q009", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答分别覆盖了产品与版本、XSS漏洞类型以及Customers功能模块，语义与标准答案要点一致。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q010", "points_partial": 0.6667, "points_full": 0.0, "faithful": false, "reason": "模型回答未提供标准答案中的具体版本号v3.4.1，其余两点已覆盖。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q011", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了标准答案中的全部五个要点，语义等价。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q012", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了标准答案中的版本、组件、函数、报文类型和拒绝服务后果。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q013", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答覆盖了受影响版本和文章评论两个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q014", "points_partial": 0.3333, "points_full": 0.0, "faithful": true, "reason": "模型回答仅覆盖产品名称及版本，未提及IDOR和缺失认证授权两个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q015", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答分别覆盖了产品及版本信息和漏洞所在文件，语义等价。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q016", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确覆盖产品及版本、无限制文件上传漏洞，并描述上传 PHP 文件执行任意代码，与远程代码执行语义等价。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q017", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐项覆盖了标准答案中的产品版本、漏洞类型、参数和接口。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q018", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答仅声明知识库无依据，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q019", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答完整覆盖了产品版本和ZFS文件系统支持两个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q020", "points_partial": 0.6667, "points_full": 0.0, "faithful": true, "reason": "模型回答覆盖了Mealie 3.3.1和存储型XSS，但未提及recipe asset upload and media serving component。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q021", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答分别覆盖了GPAC、v2.4.0、dmx_saf、.saf和拒绝服务（DoS）各要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q022", "points_partial": 0.75, "points_full": 0.0, "faithful": true, "reason": "模型回答未提及 crafted packet，其余三点均覆盖。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q023", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答依次覆盖了GPAC v2.4.0、GSF demuxer filter与Denial of Service (DoS)三个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q024", "points_partial": 0.75, "points_full": 0.0, "faithful": true, "reason": "模型回答覆盖了产品版本、可执行文件和处理函数，但未提及OS命令注入这一漏洞类型要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q025", "points_partial": 0.0, "points_full": 0.0, "faithful": false, "reason": "模型回答未提供任何答案，未覆盖标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q026", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐项覆盖了标准答案的五个要点，语义等价。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q027", "points_partial": 0.5, "points_full": 0.0, "faithful": true, "reason": "模型回答覆盖了产品与版本，但未提及Cross Site Request Forgery，仅说明严重性类型未提供。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q028", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了标准答案中的版本、Freemarker、SSTI、authenticated attackers和SQL script字段。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q029", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了所有标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q030", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答已覆盖两个标准答案要点", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q031", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答仅声明知识库中没有依据，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q032", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确提及 TON Virtual Machine (TVM)、TON Blockchain 和版本 v2025.06，三点均被覆盖。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q033", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答分别覆盖了 TON Virtual Machine (TVM)、v2025.04 和 v2025.04 之前三个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q034", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐项覆盖了Subrion CMS v4.2.1、反射型XSS及dbuser、dbpwd、dbname三个参数。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q035", "points_partial": 0.6667, "points_full": 0.0, "faithful": true, "reason": "模型回答明确提及ScadaBR和1.12.4，但未提及Session Fixation。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q036", "points_partial": 0.8, "points_full": 0.0, "faithful": true, "reason": "模型回答未提及 OneFlow 版本号，其余四个要点均已覆盖。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q037", "points_partial": 0.75, "points_full": 0.0, "faithful": true, "reason": "模型回答覆盖了OneFlow v0.9.0、构造的输入和拒绝服务，但未提及flow.column_stack。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q038", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答分别覆盖了OneFlow v0.9.0、拒绝服务（DoS）和构造的输入，语义等价。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q039", "points_partial": 0.0, "points_full": 0.0, "faithful": false, "reason": "模型回答仅列出多个CVE受影响版本，未提及标准答案中的4.16或任何哈希值，未覆盖任何要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q040", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答中明确出现了4.2以及全部三个要求覆盖的哈希值。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q041", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了标准答案的全部四个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q042", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了所有标准答案要点，语义一致。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q043", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答的三条受影响区间分别与标准答案要点的三个版本条件语义等价，均覆盖", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q001", "points_partial": 0.25, "points_full": 0.0, "faithful": true, "reason": "模型回答仅覆盖产品与版本要点，未提及敏感信息获取、rejectUnauthorized: false及禁用TLS/SSL证书校验", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q002", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了全部标准答案要点", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q003", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐一覆盖了CWE-79、Sunbird-Ed、SunbirdEd-portal和v1.13.4四个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q004", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答完整覆盖了CWE编号、CWE名称、影响产品及版本四个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q005", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答覆盖了全部三个标准答案要点：Assimp v.6.0.2、FBXMeshGeometry.cpp、MeshGeometry::MeshGeometry()。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q006", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了标准答案中的版本范围、远程攻击者、任意代码执行和模板创建功能四个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q007", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确提及EDS3000PS系列升级到3.2.0.0R2或更高版本，覆盖两条要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q008", "points_partial": 0.0, "points_full": 0.0, "faithful": false, "reason": "模型回答拒绝作答，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q009", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答分别覆盖了产品及版本 OpenSourcePOS v3.4.1、漏洞类型跨站脚本 XSS 和功能模块 Customers，语义均等价。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q010", "points_partial": 0.6667, "points_full": 0.0, "faithful": true, "reason": "模型回答覆盖了 OpenSourcePOS 和 Item Kits，但未给出具体版本号 v3.4.1。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q011", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了标准答案要点中的漏洞类型、受影响组件、功能位置、注入特制payload及执行任意Web脚本或HTML。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q012", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了全部标准答案要点，语义一致。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q013", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答同时覆盖了受影响版本和文章评论两个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q014", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答仅声明知识库无依据，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q015", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答分别覆盖了产品和版本以及漏洞文件，与标准答案要点语义一致。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q016", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确覆盖了受影响产品、不受限制文件上传及远程代码执行三个要点", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q017", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答覆盖了标准答案的全部四个要点，产品、版本、漏洞类型、参数和接口均语义一致。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q018", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐项覆盖了四个标准答案要点，内容语义一致。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q019", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答分别覆盖了Denx U-Boot 2026.04之前版本和ZFS文件系统支持两个要点", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q020", "points_partial": 0.6667, "points_full": 0.0, "faithful": true, "reason": "模型覆盖了产品和版本及XSS类型，但未提及受影响组件。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q021", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐项覆盖了GPAC v2.4.0、dmx_saf、.saf文件及拒绝服务(DoS)四个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q022", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确包含GPAC v2.4.0、dump_ttxt_sample函数、拒绝服务(DoS)和特制数据包，四个要点均覆盖。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q023", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确包含 GPAC v2.4.0、GSF demuxer filter 和 Denial of Service (DoS)，三点均覆盖。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q024", "points_partial": 0.75, "points_full": 0.0, "faithful": true, "reason": "模型回答覆盖了产品、版本、可执行文件和处理函数，但未提及OS命令注入。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q025", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答拒答，未提供任何要点内容。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q026", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐项覆盖了全部五个标准答案要点，语义等价。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q027", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答仅声明知识库无依据，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q028", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了标准答案的全部五个要点，语义等价。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q029", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐一覆盖了四个标准答案要点，语义等价。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q030", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答已覆盖产品及版本和漏洞端点两个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q031", "points_partial": 0.0, "points_full": 0.0, "faithful": false, "reason": "模型回答仅表示知识库中没有依据并拒绝回答，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q032", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确提及 TON Virtual Machine (TVM)、TON Blockchain 以及 v2025.06，均与标准答案要点语义一致。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q033", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答中的产品、版本及“v2025.04 之前”分别覆盖了三个标准要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q034", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答覆盖了所有标准答案要点，包括产品版本、漏洞类型及三个注入参数。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q035", "points_partial": 0.6667, "points_full": 0.0, "faithful": true, "reason": "模型回答仅覆盖 ScadaBR 和 1.12.4，未提及 Session Fixation。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q036", "points_partial": 0.8, "points_full": 0.0, "faithful": true, "reason": "模型回答覆盖了GPU设备ID校验缺陷、flow.cuda.get_device_capability()、DoS和crafted device ID，但未提及OneFlow v0.9.0。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q037", "points_partial": 0.75, "points_full": 0.0, "faithful": true, "reason": "模型未提及flow.column_stack，其余要点已覆盖", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q038", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答中已包含OneFlow v0.9.0、拒绝服务（DoS）以及构造的输入，覆盖全部要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q039", "points_partial": 0.0, "points_full": 0.0, "faithful": false, "reason": "模型回答仅列出CVE受影响版本，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q040", "points_partial": 0.5, "points_full": 0.0, "faithful": true, "reason": "模型回答覆盖了4.2和7e01e7ad746bc8198a8b46163ddc73a1c7d22339，但未提及两个修复提交哈希。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q041", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了标准答案全部要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q042", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐项覆盖了 Trend Micro Apex One、critical CVSS、SaaS versions、已缓解和客户无需采取行动五个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q043", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答分别给出了0<2.2.2、0<2.1.5、0<2.0.5的受影响区间，与三条要点语义等价。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
 {"qid": "q044", "points_partial": 0.0, "points_full": 0.0, "faithful": null, "reason": "", "method": "substring", "judge_model": "deepseek-v4-pro"}
-{"qid": "q045", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答覆盖了全部四个标准答案要点，语义一致。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q046", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答中影响版本区间包含>=2026.3.28且<2026.8.1，修复版本为2026.8.1，逐条覆盖全部标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q045", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了所有标准答案要点，且未出现语义冲突。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q046", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了三个标准答案要点", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
 {"qid": "q047", "points_partial": 0.25, "points_full": 0.0, "faithful": null, "reason": "", "method": "substring", "judge_model": "deepseek-v4-pro"}
-{"qid": "q048", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确包含受影响版本区间和修复版本，三点均覆盖。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q049", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答中依次包含2026.5.1、2026.7.0、2026.7.1，覆盖全部要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q050", "points_partial": 0.6667, "points_full": 0.0, "faithful": true, "reason": "模型回答未提及标准要点中的设备全称“Netlink ICT HG323RW Router”，仅覆盖了固件版本和内部构建名。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q051", "points_partial": 0.75, "points_full": 0.0, "faithful": true, "reason": "模型回答仅列出提交哈希，未体现要点中的“up to”范围限定。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q052", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了标准答案要点的所有版本范围比较，语义一致。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q053", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答仅表示知识库无依据而拒绝回答，未覆盖任何要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q054", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答仅拒绝回答，未提供任何版本信息，因此未覆盖两个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q055", "points_partial": 0.75, "points_full": 0.0, "faithful": true, "reason": "模型回答覆盖了Wakapi、2.17.6和账户接管，但未提及用户缓存服务组件。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q056", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确提到了Ping、net view和esxcli network diag ping，三个要点均被覆盖。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q057", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答仅表示知识库中没有依据并拒答，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q058", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答仅表示无法回答，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q060", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答仅声明知识库无依据，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q061", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答中明确包含 apple.awt.UIElement 和 powershell.exe -WindowStyle Hidden，均覆盖标准要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q062", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确提到 WriteProcessMemory() 和 Parent PID Spoofing，覆盖全部要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q063", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答覆盖了全部五个要点，包括身份与角色、关键人员可识别信息、Phishing for Information、Social Media 和 Search Victim-Owned Websites。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q065", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答仅声明无法作答，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q066", "points_partial": 0.0, "points_full": 0.0, "faithful": null, "reason": "", "method": "substring", "judge_model": "deepseek-v4-pro"}
-{"qid": "q067", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确覆盖了全部三个要点：只为模拟器提供、不为真机提供、过去在真机和模拟器上都可用。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q069", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答明确提及并说明了全部四个标准答案要点对应的设置项。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q070", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答未覆盖任何标准答案要点，仅声明知识库无依据。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q048", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了三个标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q049", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答中分别出现了2026.5.1、2026.7.0和2026.7.1，覆盖全部要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q050", "points_partial": 0.6667, "points_full": 0.0, "faithful": true, "reason": "模型回答未提及产品型号 Netlink ICT HG323RW Router，但覆盖了固件版本与内部构建名。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q051", "points_partial": 0.75, "points_full": 0.0, "faithful": true, "reason": "模型回答未包含版本上限限定词“up to”，其余要点均覆盖。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q052", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条列出了与标准答案要点相同的三个版本范围，仅附加CVE编号，语义等价。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q053", "points_partial": 0.0, "points_full": 0.0, "faithful": false, "reason": "模型回答仅声明知识库无依据，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q054", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答分别包含了 MinIO through 7aac2a2 与 pgsty/silo before 1233254，语义与两条标准答案要点一致。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q055", "points_partial": 0.75, "points_full": 0.0, "faithful": true, "reason": "模型回答覆盖了Wakapi、2.17.6和账户接管，未提及user caching service。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q056", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答中明确提到了Ping、net view和esxcli network diag ping，覆盖全部要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q057", "points_partial": 0.0, "points_full": 0.0, "faithful": false, "reason": "模型回答未覆盖任何标准答案要点，仅表示无法回答。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q058", "points_partial": 0.0, "points_full": 0.0, "faithful": false, "reason": "模型回答拒绝回答，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q060", "points_partial": 0.0, "points_full": 0.0, "faithful": false, "reason": "模型回答未覆盖任何标准答案要点，并声称知识库无依据，与给定标准答案要点存在矛盾。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q061", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答中分别明确提到了 apple.awt.UIElement 和 powershell.exe -WindowStyle Hidden，覆盖全部标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q062", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答中明确出现了 WriteProcessMemory() 和 Parent PID Spoofing，均覆盖标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q063", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐项覆盖了标准答案要点的全部语义内容。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q065", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐一覆盖了安装旧版操作系统削弱安全、更弱加密算法、替换存储中的操作系统文件、重配置从该文件启动、Weaken Encryption 五个要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q066", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答仅表示知识库无依据并拒答，未覆盖任何标准答案要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q067", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答逐条覆盖了标准答案的三个要点：仅为模拟器提供、不提供给真机、过去真机和模拟器均可用。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q069", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答分别覆盖了四个要点对应的安全警告项。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q070", "points_partial": 0.0, "points_full": 0.0, "faithful": true, "reason": "模型回答未覆盖任何标准答案要点，仅声明知识库中无依据。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
 {"qid": "q071", "points_partial": 0.3333, "points_full": 0.0, "faithful": null, "reason": "", "method": "substring", "judge_model": "deepseek-v4-pro"}
-{"qid": "q072", "points_partial": 0.3333, "points_full": 0.0, "faithful": true, "reason": "模型回答仅覆盖两个CVE编号，未提及标准答案要点中的version=0、version=2.2.0、version=0、version=2.2.2。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q073", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答包含两个CVE编号及受影响版本11.9.x和11.8.x，覆盖所有要点。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
-{"qid": "q074", "points_partial": 0.3333, "points_full": 0.0, "faithful": true, "reason": "模型回答提到了两个CVE编号，但未提到0.3.0和0.3.1版本号。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q072", "points_partial": 0.3333, "points_full": 0.0, "faithful": null, "reason": "", "method": "substring", "judge_model": "deepseek-v4-pro"}
+{"qid": "q073", "points_partial": 1.0, "points_full": 1.0, "faithful": true, "reason": "模型回答列出了两个CVE编号，并以受影响版本区间涵盖11.9.0和11.8.0。", "method": "llm_judge", "judge_model": "deepseek-v4-pro"}
+{"qid": "q074", "points_partial": 0.3333, "points_full": 0.0, "faithful": null, "reason": "", "method": "substring", "judge_model": "deepseek-v4-pro"}
