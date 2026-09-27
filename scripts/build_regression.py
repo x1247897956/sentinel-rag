@@ -150,11 +150,15 @@ def sample_multi_hop(conn, n: int, seed: int = 11) -> list[dict]:
         by_doc: dict[str, dict] = {}
         for x in items:
             by_doc.setdefault(x["doc_id"], x)
-        if len(by_doc) < 2:
-            continue
-        pair = rnd.sample(list(by_doc.values()), 2)
-        used_chunks.update(x["chunk_id"] for x in pair)
-        out.append({"product": k, "items": pair})
+        # 每个产品内**反复取互不重复的对**，直到该产品的公告用完或凑够 n 题。
+        # 早先这里每个产品只 append 一次就换下一个产品，于是 n 再大也只能得到
+        # 「产品组数」道题（实测 4 组产品 → 恒为 4 题，--multi 15 完全不起作用）。
+        docs = list(by_doc.values())
+        rnd.shuffle(docs)
+        while len(docs) >= 2 and len(out) < n:
+            a, b = docs.pop(), docs.pop()
+            used_chunks.update({a["chunk_id"], b["chunk_id"]})
+            out.append({"product": k, "items": [a, b]})
         if len(out) >= n:
             break
     return out

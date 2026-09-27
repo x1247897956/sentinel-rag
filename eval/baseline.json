@@ -1,10 +1,10 @@
 {
   "main_config": "hybrid_rerank",
   "tolerance": 0.02,
-  "baseline_note": "基线 = docs/eval-report.md 记录的那次完整评测（tag=v4，84 条，含生成与判分）",
-  "dataset_sha256": "dfcd615a2fd617ae4f5f0d20888ab8ac6c399c2f0f124a6d808ed917c5b3030a",
-  "n_items": 84,
-  "ran_at": "2026-09-27T10:51:34",
+  "baseline_note": "基线 = docs/eval-report.md 记录的那次完整评测（tag=v5，100 条，含生成与判分）",
+  "dataset_sha256": "9f6a6bec0e6b6576d746bec55e7c4ee4aa3873e7ab6c47c0a90878811e011544",
+  "n_items": 100,
+  "ran_at": "2026-09-27T16:29:16",
   "env": {
     "embed_model": "BAAI/bge-m3",
     "rerank": "score_fusion(weights={'vector': 1.0, 'fts': 3.0})",
@@ -22,22 +22,22 @@
   "results": {
     "hybrid_rerank": {
       "retrieval": {
-        "n_answerable": 74,
-        "recall@5": 0.8649,
-        "recall@10": 0.9459,
-        "mrr@10": 0.7345,
-        "first_hit@1": 0.6081
+        "n_answerable": 88,
+        "recall@5": 0.8864,
+        "recall@10": 0.9545,
+        "mrr@10": 0.7319,
+        "first_hit@1": 0.6136
       },
       "retrieval_by_category": {
         "concept": {
-          "n": 15,
-          "recall@5": 0.7333,
-          "mrr@10": 0.6889
+          "n": 25,
+          "recall@5": 0.84,
+          "mrr@10": 0.7833
         },
         "multi_hop": {
-          "n": 4,
-          "recall@5": 0.25,
-          "mrr@10": 0.1571
+          "n": 8,
+          "recall@5": 0.625,
+          "mrr@10": 0.1786
         },
         "single_hop": {
           "n": 55,
@@ -46,34 +46,34 @@
         }
       },
       "system": {
-        "p50_latency_ms": 1048.0,
-        "p95_latency_ms": 2217.0,
-        "p50_retrieval_ms": 120.0,
-        "p95_retrieval_ms": 177.0,
+        "p50_latency_ms": 1098.0,
+        "p95_latency_ms": 2199.0,
+        "p50_retrieval_ms": 134.0,
+        "p95_retrieval_ms": 311.0,
         "p50_rerank_ms": 2.0,
-        "p95_rerank_ms": 18.0,
-        "p50_gen_ms": 971.0,
-        "p95_gen_ms": 2089.0,
-        "avg_prompt_tokens": 833.6,
-        "avg_completion_tokens": 91.7,
-        "total_prompt_tokens": 70019,
-        "total_completion_tokens": 7702
+        "p95_rerank_ms": 3.0,
+        "p50_gen_ms": 1017.0,
+        "p95_gen_ms": 2049.0,
+        "avg_prompt_tokens": 948.3,
+        "avg_completion_tokens": 107.3,
+        "total_prompt_tokens": 94830,
+        "total_completion_tokens": 10727
       },
       "generation": {
-        "n_answerable": 74,
-        "n_unanswerable": 10,
+        "n_answerable": 88,
+        "n_unanswerable": 12,
         "n_refused_on_answerable": 3,
-        "cite_hit": 0.918,
+        "cite_hit": 0.9315,
         "cite_halluc_rate": 0.0,
         "refusal_acc": 1.0,
-        "over_refusal": 0.0405,
-        "no_citation_rate": 0.1351,
-        "points_partial": 0.7249,
-        "points_full": 0.6056,
-        "faithfulness": 0.8939
+        "over_refusal": 0.0341,
+        "no_citation_rate": 0.1364,
+        "points_partial": 0.7178,
+        "points_full": 0.6118,
+        "faithfulness": 0.8987
       },
       "attribution": {
-        "total_cases": 84,
+        "total_cases": 100,
         "failed": 9,
         "by_category": {
           "retrieval_miss": 4,

@@ -179,14 +179,20 @@ def fts_search(cur: psycopg.Cursor, query_tokens: str, limit: int = 30) -> list[
 
 
 def vector_search(cur: psycopg.Cursor, embedding: Sequence[float], limit: int = 30) -> list[tuple[str, float]]:
-    """向量检索：HNSW 余弦距离，返回 [(chunk_id, cosine_similarity)]。"""
+    """向量检索：HNSW 余弦距离，返回 [(chunk_id, cosine_similarity)]。
+
+    `ORDER BY` 末尾必须带 `chunk_id` 兜底：距离完全相等（或浮点上无法区分）时，
+    PostgreSQL 不保证行的顺序，于是同一条查询在不同机器/不同计划下可能给出不同的
+    名次，进而让 RRF 与重排的结果漂移 —— 这正是本项目观察到的「CI 与本地差约 1 道题」。
+    加上确定性 tiebreak 后，名次只由 (距离, chunk_id) 唯一决定。
+    """
     vec = _vec_literal(embedding)
     cur.execute(
         """
         SELECT chunk_id, 1 - (embedding <=> %s::vector) AS score
         FROM chunks
         WHERE embedding IS NOT NULL AND stale = FALSE
-        ORDER BY embedding <=> %s::vector
+        ORDER BY embedding <=> %s::vector, chunk_id
         LIMIT %s
         """,
         (vec, vec, limit),
