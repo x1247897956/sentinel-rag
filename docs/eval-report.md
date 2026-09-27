@@ -71,6 +71,12 @@ uv run python -m src.eval.runner \
 | OWASP Cheat Sheet Series | 40 | 40 | CC-BY-SA-4.0 |
 | **合计** | **540** | **540** | — |
 
+> **篇数的权威口径**：一条 Doc 记录一行，`scripts/prepare_corpus.py` 逐行 JSON 解析计数
+> （**不用 `str.splitlines()`**——它还会在 U+2028 / U+2029 处断行，而 OWASP 那篇
+> `DOM_based_XSS_Prevention_Cheat_Sheet` 正文里正好含这两个字符，会把 40 篇数成 42 篇）。
+> 这个坑曾让 `corpus_manifest.json` 记成 42 / 542，与本节及 README 的 540 互相矛盾而校验仍然「通过」；
+> 现已修正，并用 `tests/test_corpus_manifest.py` 钉住。
+
 ---
 
 ## 3. 指标定义（先写公式，再写数字）

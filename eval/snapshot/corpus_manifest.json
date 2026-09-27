@@ -25,10 +25,10 @@
     "owasp": {
       "source": "OWASP/CheatSheetSeries",
       "source_type": "owasp_cheatsheet",
-      "documents": 42,
+      "documents": 40,
       "sha256": "1fe2817eb6901d366c9a9cd50a2e2f58e331c35af309918282182b5c89bb312c",
       "bytes": 893599
     }
   },
-  "total_documents": 542
+  "total_documents": 540
 }
