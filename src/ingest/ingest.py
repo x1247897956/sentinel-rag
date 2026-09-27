@@ -85,9 +85,14 @@ def ingest(all_docs: bool = False, limit: int | None = None, batch: int = 32, du
             vectors = embedder.encode(inputs, batch_size=batch)
             embed_s = time.time() - t_embed
             print(f"[ingest] embedding 完成，{embed_s:.1f}s（{len(chunks) / max(embed_s, 1e-6):.0f} chunk/s）")
+            # 缓存必须**无损**写出：早先这里 round(x, 6)，而入库时 _vec_literal 按 %.7f 格式化，
+            # 于是「缓存命中」与「缓存未命中」两条路径写进库的向量不同（第 6/7 位小数），
+            # 近似的 HNSW 会把个别近似并列的候选排出不同顺序 —— 同一份语料、同一条命令
+            # 却得到不同的 recall/MRR（实测：纯向量 recall@5 0.3108 vs 0.2973）。
+            # 现在把量化点统一到 _vec_literal 一处，缓存命中与重编码产出完全相同的向量。
             with open(cache_file, "w", encoding="utf-8") as fh:
                 for v in vectors:
-                    fh.write(json.dumps([round(x, 6) for x in v]) + "\n")
+                    fh.write(json.dumps(list(v)) + "\n")
             print(f"[ingest] embedding 缓存写出 → {cache_file.name}")
     counters = {
         "inserted_docs": 0,

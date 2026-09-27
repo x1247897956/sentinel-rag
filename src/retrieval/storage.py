@@ -14,7 +14,7 @@ from typing import Any, Iterable, Sequence
 import psycopg
 from psycopg.types.json import Jsonb
 
-from src.config import EMBED_DIM, get_settings
+from src.config import EMBED_DIM, EMBED_MODEL, get_settings
 
 
 def connect(dsn: str | None = None) -> psycopg.Connection:
@@ -123,7 +123,8 @@ def insert_chunks(cur: psycopg.Cursor, doc: dict, chunks: Iterable[Any], embeddi
                 doc.get("affected_versions"),
                 ch.section,
                 ch.content_hash,
-                "bge-small-zh-v1.5" if emb else None,
+                # 必须写实际使用的模型名（EMBED_MODEL），否则评测口径与库内 provenance 不一致
+                EMBED_MODEL if emb else None,
             ),
         )
         inserted += cur.rowcount

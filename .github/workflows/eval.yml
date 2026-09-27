@@ -41,7 +41,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .hf-cache
-          key: hf-bge-small-zh-v1.5-reranker-base-v1
+          # 键必须与真实使用的 embedding 模型一致：入库用的是 EMBED_MODEL=BAAI/bge-m3。
+          # 旧键名写成 bge-small-zh-v1.5，导致 bge-m3 每次都要在入库步骤里重新下载。
+          key: hf-bge-m3-reranker-base-v2
       - name: 缓存语料快照
         uses: actions/cache@v4
         with:
@@ -59,7 +61,9 @@ jobs:
         run: |
           uv run python - <<'PY'
           from huggingface_hub import snapshot_download
-          for r in ["BAAI/bge-small-zh-v1.5", "BAAI/bge-reranker-base"]:
+          # BAAI/bge-m3 是入库真正使用的 embedding 模型（1024 维），必须在这里显式下载，
+          # 否则它会在入库步骤里隐式下载，既慢又不进缓存。
+          for r in ["BAAI/bge-m3", "BAAI/bge-reranker-base"]:
               snapshot_download(r)
           PY
 

@@ -1,7 +1,7 @@
 """模型层：本地 BGE embedding / cross-encoder 重排，以及 DeepSeek（OpenAI 兼容）对话接口。
 
 诚实原则：这里**只有一个真实实现路径**，不做静默降级。
-- embedding：BAAI/bge-small-zh-v1.5（512 维，本地 CPU）
+- embedding：BAAI/bge-m3（1024 维，多语种，本地 CPU；见 src/config.py 的 EMBED_MODEL）
 - 重排：BAAI/bge-reranker-base（cross-encoder，本地 CPU）；另有 LLM 重排作为可选项，
   评测报告里必须写明实际用的是哪一种。
 - 生成：DeepSeek（OpenAI 兼容 /chat/completions）

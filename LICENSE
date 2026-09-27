@@ -33,6 +33,6 @@ SOFTWARE.
 | MITRE ATT&CK（STIX） | github.com/mitre-attack/attack-stix-data | MITRE ATT&CK Terms of Use |
 | OWASP Cheat Sheet Series | github.com/OWASP/CheatSheetSeries | CC-BY-SA-4.0 |
 
-`BAAI/bge-small-zh-v1.5`、`BAAI/bge-reranker-base` 为模型权重，遵循各自模型卡上的许可。
+`BAAI/bge-m3`、`BAAI/bge-reranker-base` 为模型权重，遵循各自模型卡上的许可。
 
 本项目只做**只读拉取**并遵守各来源 API 条款，不含任何公司内部数据与真实个人数据。
