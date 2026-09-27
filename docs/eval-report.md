@@ -368,31 +368,45 @@ gold chunk（`T1547.001#1`）本身没有出现查询里的任何强标识符（
 
 | 项 | 值 |
 | --- | --- |
-| PR | [#1](https://github.com/x1247897956/sentinel-rag/pull/1) —— **负对照实验，刻意不合并** |
-| 失败运行 | [run 36291977414](https://github.com/x1247897956/sentinel-rag/actions/runs/36291977414)（`pull_request`，结论 `failure`） |
+| PR | [#2](https://github.com/x1247897956/sentinel-rag/pull/2) —— **负对照实验，刻意不合并** |
+| 失败运行 | [run 36306724693](https://github.com/x1247897956/sentinel-rag/actions/runs/36306724693)（`pull_request`，结论 `failure`，约 4 分钟） |
 | 改了什么 | 把 `hybrid_rerank` 的重排分支短路（`if mode == "hybrid_rerank" and False:`），其余不动 |
 | 失败的步骤 | 第 15 步「生成指标（由冻结回答快照确定性重算）+ 门禁」 |
 | 关键点 | 第 1~14 步（建库 → 入库 → 四组检索）全部 `success`，**红的只有门禁这一步**，所以不是环境/网络抖动 |
 
-`gh run view 36291977414 --log-failed` 的原始输出（节选，逐字）：
+`gh run view 36306724693 --log-failed` 的原始输出（节选，逐字）：
 
 ```
-[gate] 检索指标（hybrid_rerank）：{"n_answerable": 74, "recall@5": 0.8378, "recall@10": 0.9324, "mrr@10": 0.6487, "first_hit@1": 0.4595}
-  hybrid         {"n_answerable": 74, "recall@5": 0.8378, "recall@10": 0.9324, "mrr@10": 0.6487, "first_hit@1": 0.4595}
-  hybrid_rerank  {"n_answerable": 74, "recall@5": 0.8378, "recall@10": 0.9324, "mrr@10": 0.6487, "first_hit@1": 0.4595}
+[gate] 检索指标（hybrid_rerank）：{"n_answerable": 88, "recall@5": 0.8636, "recall@10": 0.9432, "mrr@10": 0.6885, "first_hit@1": 0.5227}
+  vector         {"n_answerable": 88, "recall@5": 0.375, "recall@10": 0.4205, "mrr@10": 0.3075, "first_hit@1": 0.2614}
+  fts            {"n_answerable": 88, "recall@5": 0.8295, "recall@10": 0.8977, "mrr@10": 0.7661, "first_hit@1": 0.7159}
+  hybrid         {"n_answerable": 88, "recall@5": 0.8636, "recall@10": 0.9432, "mrr@10": 0.6885, "first_hit@1": 0.5227}
+  hybrid_rerank  {"n_answerable": 88, "recall@5": 0.8636, "recall@10": 0.9432, "mrr@10": 0.6885, "first_hit@1": 0.5227}
 [gate] ❌ 未通过，掉线项：
-  - recall@5: 0.8378 < baseline 0.8649 - 0.02
-  - mrr@10: 0.6487 < baseline 0.7345 - 0.02
-  - first_hit@1: 0.4595 < baseline 0.6081 - 0.02
+  - recall@5: 0.8636 < baseline 0.8864 - 0.02
+  - mrr@10: 0.6885 < baseline 0.7319 - 0.02
+  - first_hit@1: 0.5227 < baseline 0.6136 - 0.02
 ##[error]Process completed with exit code 1.
 ```
 
-`hybrid_rerank` 与 `hybrid` 两行完全相同，正是「重排确实被关掉了」的直接证据；
-三条掉线项里 `mrr@10` 掉得最多（-8.6pt），与 §4.3 「重排的主战场是 MRR」一致。
+`hybrid_rerank` 与 `hybrid` 两行**完全相同**，正是「重排确实被关掉了」的直接证据；
+三条掉线项里 `MRR@10` 掉得最多（-4.3pt），与 §4.3「重排的主战场是 MRR」一致。
 
-同一次改动在本地（`--configs hybrid hybrid_rerank --judge`）的 Badcase 转移：
-`context_truncated 5 → 6`、失败总数 `9 → 10`、`points_partial 0.7249 → 0.7136`、
-`faithfulness 0.8939 → 0.8636`——关掉重排后有 1 条 gold 被挤出上下文预算。
+> **顺带一个好消息**：这一跑里 CI 的 `vector` / `fts` / `hybrid` 三行与本报告 §4.1 的
+> **本地数字逐位相同**（0.375/0.4205/0.3075/0.2614、0.8295/0.8977/0.7661/0.7159、
+> 0.8636/0.9432/0.6885/0.5227）。v4 时期观察到的「CI 与本地差约 1 道题」在补上
+> `ORDER BY ... , chunk_id` 的确定性 tiebreak 之后**已经消失**（见 §10-7）。
+
+同一次改动在本地（`--configs hybrid_rerank --judge`）的 Badcase 转移：
+`context_truncated 5 → 6`、失败总数 `9 → 10`，`retrieval_miss` / `rerank_misorder` /
+`generation_halluc` 三项不变——关掉重排后有 1 条 gold 被挤出上下文预算（明细见
+`eval/results/`，属一次性负对照，未纳入 git）。
+
+> ⚠️ **生成类指标不能这样对比**：它们是每次真实调用模型得到的，本身带随机性。
+> 本轮同一次改动让 `points_partial` 从 0.7178 变成 0.7404、`faithfulness` 从 0.8987 变成 0.9481，
+> 看上去"变好了"——这**只是**模型输出的抖动，**不能**读成"关掉重排让生成质量提升"。
+> 只有 `recall*` / `MRR` / 引用与拒答这类**确定性**指标才适合做单变量对照；
+> 这也是本报告把检索指标与生成指标分开、并让 CI 用冻结快照的原因。
 
 ### 8.2 本地降级复现（两条，一条命令可重跑）
 
@@ -478,8 +492,10 @@ CI 侧（`.github/workflows/eval.yml`）用**冻结的回答快照** `eval/snaps
 5. **生成指标由快照重算**：CI 里的生成指标来自本地一次真实运行冻结下来的回答，
    不是 CI 现场调用模型；这样做是为了不在 CI 放密钥，代价是 CI 不会发现「模型行为变了」。
 6. **语料是快照**：CVE/公告会持续更新，本报告只对 `corpus_manifest.json` 记录的那份快照负责。
-7. **向量检索的确定性**：`ORDER BY` 已补 `chunk_id` 兜底（距离并列时的顺序不再依赖计划），
+7. **向量检索的确定性**：`ORDER BY` 已补 `chunk_id` 兜底（距离并列时的顺序不再依赖执行计划），
    并且实测 `hnsw.ef_search=40` 在本规模（2618 行）下与精确扫描**结果相同、延迟相近**
-   （10 ms 量级），所以近似索引本身没有造成偏差。跨机器仍可能有极小的差异
-   （不同 pgvector 构建、不同 CPU 浮点），门禁的 2pt 容差即为此设。
+   （10 ms 量级），所以近似索引本身没有造成偏差。
+   **实测证据**：§8.1 那次 CI 跑出的 `vector` / `fts` / `hybrid` 三行与本页本地数字**逐位相同**；
+   v4 时期观察到的「CI 与本地差约 1 道题」在补 tiebreak 后已经消失。
+   门禁的 2pt 容差仍保留，用于容忍换 pgvector 版本/换 CPU 时的浮点差异。
 8. **本报告不含任何旧项目（LLM Guard 等）的评测数字**，也不含估算值。

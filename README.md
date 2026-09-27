@@ -56,10 +56,11 @@
 **Badcase 四分类归因**（100 条中失败 9 条）：
 `retrieval_miss` 4 · `rerank_misorder` 0 · `context_truncated` 5 · `generation_halluc` 0。
 
-**CI 门禁真的拦过**（可点开复核）：[`eval` run 36291977414](https://github.com/x1247897956/sentinel-rag/actions/runs/36291977414)
-（PR [#1](https://github.com/x1247897956/sentinel-rag/pull/1) 是一次**刻意制造的负对照**：把重排短路掉）——
+**CI 门禁真的拦过**（可点开复核）：[`eval` run 36306724693](https://github.com/x1247897956/sentinel-rag/actions/runs/36306724693)
+（PR [#2](https://github.com/x1247897956/sentinel-rag/pull/2) 是一次**刻意制造的负对照**：把重排短路掉）——
 前 14 步建库/入库/四组检索全绿，**只有门禁那一步红**，退出码 1，掉线项
-`recall@5` 0.8649→0.8378、`MRR@10` 0.7345→0.6487、首条命中率 0.6081→0.4595。
+`recall@5` 0.8864→0.8636、`MRR@10` 0.7319→0.6885、首条命中率 0.6136→0.5227；
+`hybrid_rerank` 与 `hybrid` 两行完全相同，证明拦的正是「重排掉线」。
 另有两组本地降级实验（候选池 30→5、关掉拒答阈值）同样返回退出码 1，见
 [`docs/eval-report.md` §8](docs/eval-report.md)。
 
