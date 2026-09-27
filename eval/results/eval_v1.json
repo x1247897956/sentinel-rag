@@ -1,0 +1,378 @@
+{
+  "eval_id": "5cbd8f3e-0b3a-4944-858a-7b65d11eb4d6",
+  "configs": [
+    "vector",
+    "fts",
+    "hybrid",
+    "hybrid_rerank"
+  ],
+  "main_config": "hybrid_rerank",
+  "dataset": "/Users/seyr1n/01-Project/sentinel-rag/eval/dataset/regression_set.jsonl",
+  "dataset_sha256": "bff208f3138795d12af81a55869582b140f91b8f7c3f0c8693085f22e62e756e",
+  "n_items": 85,
+  "git_sha": "06da3f3",
+  "env": {
+    "embed_model": "BAAI/bge-m3",
+    "rerank": "score_fusion(weights={'vector': 1.0, 'fts': 3.0})",
+    "gen_model": "deepseek-chat",
+    "judge_model": "deepseek-v4-pro",
+    "chunk_target": 420,
+    "chunk_overlap": 80,
+    "topk_recall": 30,
+    "topn_final": 6,
+    "token_budget": 2600,
+    "refusal_min_fts": 0.008,
+    "refusal_min_cosine": 0.62,
+    "prompt_version": "answer-zh-v1.0"
+  },
+  "results": {
+    "vector": {
+      "retrieval": {
+        "n_answerable": 75,
+        "recall@5": 0.3067,
+        "recall@10": 0.3333,
+        "mrr@10": 0.2411,
+        "first_hit@1": 0.2
+      },
+      "retrieval_by_category": {
+        "concept": {
+          "n": 15,
+          "recall@5": 0.8667,
+          "mrr@10": 0.6944
+        },
+        "multi_hop": {
+          "n": 5,
+          "recall@5": 0.2,
+          "mrr@10": 0.04
+        },
+        "single_hop": {
+          "n": 55,
+          "recall@5": 0.1636,
+          "mrr@10": 0.1358
+        }
+      },
+      "system": {
+        "p50_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "p50_retrieval_ms": 66.0,
+        "p95_retrieval_ms": 92.0,
+        "p50_rerank_ms": 1.0,
+        "p95_rerank_ms": 1.0,
+        "p50_gen_ms": 0.0,
+        "p95_gen_ms": 0.0,
+        "avg_prompt_tokens": 0.0,
+        "avg_completion_tokens": 0.0,
+        "total_prompt_tokens": 0,
+        "total_completion_tokens": 0
+      }
+    },
+    "fts": {
+      "retrieval": {
+        "n_answerable": 75,
+        "recall@5": 0.8533,
+        "recall@10": 0.9333,
+        "mrr@10": 0.7797,
+        "first_hit@1": 0.72
+      },
+      "retrieval_by_category": {
+        "concept": {
+          "n": 15,
+          "recall@5": 0.6667,
+          "mrr@10": 0.6778
+        },
+        "multi_hop": {
+          "n": 5,
+          "recall@5": 0.2,
+          "mrr@10": 0.1524
+        },
+        "single_hop": {
+          "n": 55,
+          "recall@5": 0.9636,
+          "mrr@10": 0.8645
+        }
+      },
+      "system": {
+        "p50_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "p50_retrieval_ms": 8.0,
+        "p95_retrieval_ms": 14.0,
+        "p50_rerank_ms": 1.0,
+        "p95_rerank_ms": 1.0,
+        "p50_gen_ms": 0.0,
+        "p95_gen_ms": 0.0,
+        "avg_prompt_tokens": 0.0,
+        "avg_completion_tokens": 0.0,
+        "total_prompt_tokens": 0,
+        "total_completion_tokens": 0
+      }
+    },
+    "hybrid": {
+      "retrieval": {
+        "n_answerable": 75,
+        "recall@5": 0.84,
+        "recall@10": 0.9333,
+        "mrr@10": 0.65,
+        "first_hit@1": 0.4667
+      },
+      "retrieval_by_category": {
+        "concept": {
+          "n": 15,
+          "recall@5": 0.7333,
+          "mrr@10": 0.7
+        },
+        "multi_hop": {
+          "n": 5,
+          "recall@5": 0.4,
+          "mrr@10": 0.3286
+        },
+        "single_hop": {
+          "n": 55,
+          "recall@5": 0.9091,
+          "mrr@10": 0.6656
+        }
+      },
+      "system": {
+        "p50_latency_ms": 0.0,
+        "p95_latency_ms": 0.0,
+        "p50_retrieval_ms": 65.0,
+        "p95_retrieval_ms": 139.0,
+        "p50_rerank_ms": 1.0,
+        "p95_rerank_ms": 24.0,
+        "p50_gen_ms": 0.0,
+        "p95_gen_ms": 0.0,
+        "avg_prompt_tokens": 0.0,
+        "avg_completion_tokens": 0.0,
+        "total_prompt_tokens": 0,
+        "total_completion_tokens": 0
+      }
+    },
+    "hybrid_rerank": {
+      "retrieval": {
+        "n_answerable": 75,
+        "recall@5": 0.8667,
+        "recall@10": 0.9467,
+        "mrr@10": 0.7292,
+        "first_hit@1": 0.6
+      },
+      "retrieval_by_category": {
+        "concept": {
+          "n": 15,
+          "recall@5": 0.7333,
+          "mrr@10": 0.6889
+        },
+        "multi_hop": {
+          "n": 5,
+          "recall@5": 0.4,
+          "mrr@10": 0.1924
+        },
+        "single_hop": {
+          "n": 55,
+          "recall@5": 0.9455,
+          "mrr@10": 0.7889
+        }
+      },
+      "system": {
+        "p50_latency_ms": 1376.0,
+        "p95_latency_ms": 5822.0,
+        "p50_retrieval_ms": 284.0,
+        "p95_retrieval_ms": 4487.0,
+        "p50_rerank_ms": 2.0,
+        "p95_rerank_ms": 6.0,
+        "p50_gen_ms": 994.0,
+        "p95_gen_ms": 1830.0,
+        "avg_prompt_tokens": 848.4,
+        "avg_completion_tokens": 94.1,
+        "total_prompt_tokens": 72115,
+        "total_completion_tokens": 7996
+      },
+      "generation": {
+        "n_answerable": 75,
+        "n_unanswerable": 10,
+        "n_refused_on_answerable": 3,
+        "cite_hit": 0.9206,
+        "cite_halluc_rate": 0.0,
+        "refusal_acc": 1.0,
+        "over_refusal": 0.04,
+        "no_citation_rate": 0.12,
+        "points_partial": 0.7095,
+        "points_full": 0.5833,
+        "faithfulness": 0.9848
+      },
+      "attribution": {
+        "total_cases": 85,
+        "failed": 9,
+        "by_category": {
+          "retrieval_miss": 4,
+          "rerank_misorder": 0,
+          "context_truncated": 5,
+          "generation_halluc": 0
+        },
+        "cases": {
+          "retrieval_miss": [
+            {
+              "qid": "q065",
+              "question": "T1547.001 这个技术点是什么？它可以通过哪些启动文件夹路径和注册表键实现持久化？",
+              "category": "concept",
+              "gold_chunk_ids": [
+                "T1547.001#1"
+              ],
+              "top5": [
+                "T1037.003#0",
+                "T1047#2",
+                "T1003.008#0",
+                "T1003.008#1",
+                "T1003.008#2"
+              ],
+              "top_score": 0.5601487084916209,
+              "refused": true
+            },
+            {
+              "qid": "q066",
+              "question": "在 Xcode 中，为什么启用 Scribble guards、Edge guards、Malloc guards 和 Zombies 这些额外诊断工具时需要注意一个限制？这个限制是什么？",
+              "category": "concept",
+              "gold_chunk_ids": [
+                "owasp:C-Based_Toolchain_Hardening_Cheat_Sheet#50"
+              ],
+              "top5": [
+                "owasp:C-Based_Toolchain_Hardening_Cheat_Sheet#57",
+                "owasp:C-Based_Toolchain_Hardening_Cheat_Sheet#58",
+                "owasp:C-Based_Toolchain_Hardening_Cheat_Sheet#5",
+                "owasp:C-Based_Toolchain_Hardening_Cheat_Sheet#6",
+                "GHSA-xwc4-2qqp-pxh3#1"
+              ],
+              "top_score": 1.494386334837118,
+              "refused": false
+            },
+            {
+              "qid": "q069",
+              "question": "T1593.002 这个技术点是什么？攻击者如何使用搜索引擎？检测方面原文提到了什么？",
+              "category": "concept",
+              "gold_chunk_ids": [
+                "T1593.002#0"
+              ],
+              "top5": [
+                "T1033#0",
+                "T1018#0",
+                "T1056.003#0",
+                "T1003.008#0",
+                "T1003.008#1"
+              ],
+              "top_score": 0.6293290061511441,
+              "refused": true
+            },
+            {
+              "qid": "q070",
+              "question": "T1555.006 这个技术点是什么？攻击者如何获取凭据？检测时关注哪些命令？",
+              "category": "concept",
+              "gold_chunk_ids": [
+                "T1555.006#0"
+              ],
+              "top5": [
+                "T1033#0",
+                "T1047#0",
+                "T1018#0",
+                "T1027.010#0",
+                "T1056.003#0"
+              ],
+              "top_score": 0.726955596608926,
+              "refused": false
+            }
+          ],
+          "rerank_misorder": [],
+          "context_truncated": [
+            {
+              "qid": "q009",
+              "question": "针对 CVE-2026-97724，官方给出的修复建议是什么？需要升级到哪个版本？",
+              "category": "single_hop",
+              "gold_chunk_ids": [
+                "CVE-2026-97724#4"
+              ],
+              "top5": [
+                "GHSA-xwwx-5pjp-p9gg#1",
+                "GHSA-xrq6-q643-mcv3#1",
+                "GHSA-xrff-5qhc-2wvh#1",
+                "CVE-2026-97724#0",
+                "CVE-2026-97724#1"
+              ],
+              "top_score": 0.9121762170982817,
+              "refused": false
+            },
+            {
+              "qid": "q015",
+              "question": "根据该 CVE 公告，哪些版本被标记为受影响（affected）？",
+              "category": "single_hop",
+              "gold_chunk_ids": [
+                "CVE-2025-71064#2"
+              ],
+              "top5": [
+                "CVE-2026-97871#2",
+                "CVE-2026-96777#2",
+                "CVE-2026-97871#3",
+                "CVE-2026-96763#2",
+                "CVE-2026-96762#2"
+              ],
+              "top_score": 1.379519475,
+              "refused": false
+            },
+            {
+              "qid": "q056",
+              "question": "kvcache-ai mooncake 下，CVE-2026-96762 与 CVE-2026-96764 两个漏洞各自的受影响版本区间分别是什么？",
+              "category": "multi_hop",
+              "gold_chunk_ids": [
+                "CVE-2026-96762#2",
+                "CVE-2026-96764#2"
+              ],
+              "top5": [
+                "CVE-2026-96762#0",
+                "CVE-2026-96762#1",
+                "CVE-2026-96764#0",
+                "CVE-2026-96764#1",
+                "CVE-2026-96763#0"
+              ],
+              "top_score": 1.7564401981212383,
+              "refused": false
+            },
+            {
+              "qid": "q057",
+              "question": "surrealdb surrealdb 下，CVE-2025-71390 与 CVE-2025-71397 两个漏洞各自的受影响版本区间分别是什么？",
+              "category": "multi_hop",
+              "gold_chunk_ids": [
+                "CVE-2025-71390#2",
+                "CVE-2025-71397#2"
+              ],
+              "top5": [
+                "CVE-2025-71390#1",
+                "CVE-2025-71397#1",
+                "CVE-2025-71390#0",
+                "CVE-2025-71397#0",
+                "CVE-2025-71392#1"
+              ],
+              "top_score": 1.4778358745095947,
+              "refused": false
+            },
+            {
+              "qid": "q058",
+              "question": "Mattermost Mattermost 下，CVE-2026-96259 与 CVE-2026-96260 两个漏洞各自的受影响版本区间分别是什么？",
+              "category": "multi_hop",
+              "gold_chunk_ids": [
+                "CVE-2026-96259#2",
+                "CVE-2026-96260#2"
+              ],
+              "top5": [
+                "CVE-2026-96259#0",
+                "CVE-2026-96260#0",
+                "CVE-2026-96259#1",
+                "CVE-2026-96260#1",
+                "CVE-2026-96259#4"
+              ],
+              "top_score": 1.393166325,
+              "refused": false
+            }
+          ],
+          "generation_halluc": []
+        }
+      }
+    }
+  },
+  "ran_at": "2026-09-26T21:03:27"
+}
