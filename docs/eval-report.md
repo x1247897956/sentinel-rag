@@ -306,11 +306,43 @@ gold chunk（`T1547.001#1`）本身没有出现查询里的任何强标识符（
 
 ---
 
-## 8. 降级复现实验：CI 门禁真的拦了 **2 次**
+## 8. 门禁真实拦截记录（CI 里 1 次 + 本地降级 2 次）
 
 门禁规则（`eval/baseline.json` + `src/eval/runner.py:check_gate`）：
 `recall@5 / recall@10 / MRR@10 / 首条命中率` 允许 -2pt 抖动；`refusal_acc` **不得下降**；
 `cite_hit` 允许 -2pt；`cite_halluc_rate` 不得 +2pt；`p95_latency_ms` / `avg_prompt_tokens` 不得恶化超过 20%。
+
+### 8.1 CI 里的真实拦截（GitHub Actions，可点开复核）
+
+| 项 | 值 |
+| --- | --- |
+| PR | [#1](https://github.com/x1247897956/sentinel-rag/pull/1) —— **负对照实验，刻意不合并** |
+| 失败运行 | [run 36291977414](https://github.com/x1247897956/sentinel-rag/actions/runs/36291977414)（`pull_request`，结论 `failure`） |
+| 改了什么 | 把 `hybrid_rerank` 的重排分支短路（`if mode == "hybrid_rerank" and False:`），其余不动 |
+| 失败的步骤 | 第 15 步「生成指标（由冻结回答快照确定性重算）+ 门禁」 |
+| 关键点 | 第 1~14 步（建库 → 入库 → 四组检索）全部 `success`，**红的只有门禁这一步**，所以不是环境/网络抖动 |
+
+`gh run view 36291977414 --log-failed` 的原始输出（节选，逐字）：
+
+```
+[gate] 检索指标（hybrid_rerank）：{"n_answerable": 74, "recall@5": 0.8378, "recall@10": 0.9324, "mrr@10": 0.6487, "first_hit@1": 0.4595}
+  hybrid         {"n_answerable": 74, "recall@5": 0.8378, "recall@10": 0.9324, "mrr@10": 0.6487, "first_hit@1": 0.4595}
+  hybrid_rerank  {"n_answerable": 74, "recall@5": 0.8378, "recall@10": 0.9324, "mrr@10": 0.6487, "first_hit@1": 0.4595}
+[gate] ❌ 未通过，掉线项：
+  - recall@5: 0.8378 < baseline 0.8649 - 0.02
+  - mrr@10: 0.6487 < baseline 0.7345 - 0.02
+  - first_hit@1: 0.4595 < baseline 0.6081 - 0.02
+##[error]Process completed with exit code 1.
+```
+
+`hybrid_rerank` 与 `hybrid` 两行完全相同，正是「重排确实被关掉了」的直接证据；
+三条掉线项里 `mrr@10` 掉得最多（-8.6pt），与 §4.3 「重排的主战场是 MRR」一致。
+
+同一次改动在本地（`--configs hybrid hybrid_rerank --judge`）的 Badcase 转移：
+`context_truncated 5 → 6`、失败总数 `9 → 10`、`points_partial 0.7249 → 0.7136`、
+`faithfulness 0.8939 → 0.8636`——关掉重排后有 1 条 gold 被挤出上下文预算。
+
+### 8.2 本地降级复现（两条，一条命令可重跑）
 
 `uv run python scripts/degrade_experiments.py --baseline eval/baseline.json` 的真实输出：
 
@@ -320,11 +352,15 @@ gold chunk（`T1547.001#1`）本身没有出现查询里的任何强标识符（
 | **E2 拒答阈值关掉** | `--refusal-min-fts 0 --refusal-min-cosine 0` | ❌ 退出码 1 | `refusal_acc: 0.0 < baseline 1.0` | 知识库外 10 条全部不再拒答 |
 
 E1 的归因转移正是「候选池变小 ⇒ gold 更容易完全进不了池子」的预期结果；
-E2 命中「幻觉零容忍」那一项。两次拦截的运行痕迹与完整日志见
-`eval/results/degrade_summary.json`，CI 历史见仓库 Actions。
+E2 命中「拒答不得下降」这一条。两次的完整日志与退出码见 `eval/results/degrade_summary.json`。
 
-> 说明：这两次拦截是**本地门禁脚本**真实返回退出码 1，命令与输出都在上面，可复现。
-> CI（`eval.yml`）接入的是同一段 `check_gate` 逻辑。
+> **口径说明**：8.1 是 **CI 里**的真实拦截（Actions 历史可查）；8.2 是**本地门禁脚本**
+> 真实返回退出码 1，命令与输出都在上面、可复现。两者跑的是同一段 `check_gate` 逻辑。
+>
+> **另一个如实记录**：CI 与本地对同一份代码给出的 `hybrid` 指标并不逐位相同
+> （CI `MRR@10` 0.6487 vs 本地 0.6464，差约 1 道题）。原因是 HNSW 是**近似**检索，
+> 换机器/换插入顺序会让个别近似并列的候选换序。2pt 的门禁容差正是为这类抖动留的；
+> 要做逐位复现需改用精确检索（见 §10-7）。
 
 ---
 
@@ -385,7 +421,8 @@ CI 侧（`.github/workflows/eval.yml`）用**冻结的回答快照** `eval/snaps
    不是 CI 现场调用模型；这样做是为了不在 CI 放密钥，代价是 CI 不会发现「模型行为变了」。
 6. **语料是快照**：CVE/公告会持续更新，本报告只对 `corpus_manifest.json` 记录的那份快照负责。
 7. **HNSW 是近似检索**：向量一路的结果依赖索引图。本轮已把「缓存量化不一致」这个会让图变化的
-   缺陷修掉，并验证了冷/热缓存重建逐位相同；但**换插入顺序或换 pgvector 版本仍可能改变
-   个别近似并列候选的顺序**，进而让 `recall` 抖动 1 题量级。要做精确复现需改用精确（暴力）检索，
-   千级 chunk 下代价可接受——**本轮没换**。
+   缺陷修掉，并验证了冷/热缓存重建逐位相同；但**换机器、换插入顺序或换 pgvector 版本仍可能改变
+   个别近似并列候选的顺序**。这不是推测：同一份代码在 CI 上给出 `hybrid` 的 `MRR@10` 0.6487，
+   在本地给出 0.6464（差约 1 道题，见 §8.1）。门禁的 2pt 容差正是为这类抖动留的。
+   要做逐位复现需改用精确（暴力）检索，千级 chunk 下代价可接受——**本轮没换**。
 8. **本报告不含任何旧项目（LLM Guard 等）的评测数字**，也不含估算值。

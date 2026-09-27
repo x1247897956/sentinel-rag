@@ -10,6 +10,12 @@
       "mrr@10": 0.791,
       "first_hit@1": 0.7568
     },
+    "gate_stdout": [
+      "  hybrid_rerank  {\"n_answerable\": 74, \"recall@5\": 0.8514, \"recall@10\": 0.8514, \"mrr@10\": 0.791, \"first_hit@1\": 0.7568}",
+      "[gate] 生成指标（来自冻结快照）：{\"n_answerable\": 74, \"n_unanswerable\": 10, \"cite_hit\": 0.918, \"cite_halluc_rate\": 0.0, \"no_citation_rate\": 0.1351, \"refusal_acc\": 1.0, \"over_refusal\": 0.0405, \"points_partial\": 0.7249, \"points_full\": 0.6056, \"faithfulness\": 0.8939, \"judged_items\": 71}",
+      "[gate] ❌ 未通过，掉线项：",
+      "  - recall@10: 0.8514 < baseline 0.9459 - 0.02"
+    ],
     "badcase": {
       "by_category": {
         "retrieval_miss": 11,
@@ -38,7 +44,8 @@
       "first_hit@1": 0.6081
     },
     "gate_stdout": [
-      "[gate] 生成指标（来自冻结快照）：{\"n_answerable\": 74, \"n_unanswerable\": 10, \"cite_hit\": 0.9194, \"cite_halluc_rate\": 0.0, \"no_citation_rate\": 0.1622, \"refusal_acc\": 0.0, \"over_refusal\": 0.0, \"points_partial\": 0.7085, \"points_full\": 0.5775, \"faithfulness\": 0.9545, \"judged_items\": 71}",
+      "  hybrid_rerank  {\"n_answerable\": 74, \"recall@5\": 0.8649, \"recall@10\": 0.9459, \"mrr@10\": 0.7345, \"first_hit@1\": 0.6081}",
+      "[gate] 生成指标（来自冻结快照）：{\"n_answerable\": 74, \"n_unanswerable\": 10, \"cite_hit\": 0.918, \"cite_halluc_rate\": 0.0, \"no_citation_rate\": 0.1757, \"refusal_acc\": 0.0, \"over_refusal\": 0.0, \"points_partial\": 0.7249, \"points_full\": 0.6056, \"faithfulness\": 0.8939, \"judged_items\": 71}",
       "[gate] ❌ 未通过，掉线项：",
       "  - refusal_acc: 0.0 < baseline 1.0"
     ]

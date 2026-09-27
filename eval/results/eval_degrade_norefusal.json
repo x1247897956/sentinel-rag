@@ -1,5 +1,5 @@
 {
-  "eval_id": "d3aa15b8-9f2a-4404-b4f2-baa65e84cbfe",
+  "eval_id": "0fe844bb-58a3-4c26-90ed-9cd8005756ef",
   "configs": [
     "hybrid_rerank"
   ],
@@ -7,7 +7,7 @@
   "dataset": "/Users/seyr1n/01-Project/sentinel-rag/eval/dataset/regression_set.jsonl",
   "dataset_sha256": "dfcd615a2fd617ae4f5f0d20888ab8ac6c399c2f0f124a6d808ed917c5b3030a",
   "n_items": 84,
-  "git_sha": "44d9239",
+  "git_sha": "6803d50",
   "env": {
     "embed_model": "BAAI/bge-m3",
     "rerank": "score_fusion(weights={'vector': 1.0, 'fts': 3.0})",
@@ -51,10 +51,10 @@
       "system": {
         "p50_latency_ms": 0.0,
         "p95_latency_ms": 0.0,
-        "p50_retrieval_ms": 62.0,
-        "p95_retrieval_ms": 85.0,
-        "p50_rerank_ms": 22.0,
-        "p95_rerank_ms": 22.0,
+        "p50_retrieval_ms": 60.0,
+        "p95_retrieval_ms": 83.0,
+        "p50_rerank_ms": 1.0,
+        "p95_rerank_ms": 1.0,
         "p50_gen_ms": 0.0,
         "p95_gen_ms": 0.0,
         "avg_prompt_tokens": 0.0,
@@ -64,5 +64,5 @@
       }
     }
   },
-  "ran_at": "2026-09-27T09:11:57"
+  "ran_at": "2026-09-27T11:54:09"
 }

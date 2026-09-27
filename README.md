@@ -42,6 +42,13 @@
 **Badcase 四分类归因**（84 条中失败 9 条）：
 `retrieval_miss` 4 · `rerank_misorder` 0 · `context_truncated` 5 · `generation_halluc` 0。
 
+**CI 门禁真的拦过**（可点开复核）：[`eval` run 36291977414](https://github.com/x1247897956/sentinel-rag/actions/runs/36291977414)
+（PR [#1](https://github.com/x1247897956/sentinel-rag/pull/1) 是一次**刻意制造的负对照**：把重排短路掉）——
+前 14 步建库/入库/四组检索全绿，**只有门禁那一步红**，退出码 1，掉线项
+`recall@5` 0.8649→0.8378、`MRR@10` 0.7345→0.6487、首条命中率 0.6081→0.4595。
+另有两组本地降级实验（候选池 30→5、关掉拒答阈值）同样返回退出码 1，见
+[`docs/eval-report.md` §8](docs/eval-report.md)。
+
 > ⚠️ **一个不利于本项目结论的实测发现，照实写在这里**：
 > 在**这份语料**上 **B（纯全文）的 MRR 高于 C（混合）**——因为语料正文以英文为主、
 > 问题以中文为主，向量一路的 `recall@5` 只有 0.31，融合时引入了噪声。
