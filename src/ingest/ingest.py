@@ -25,23 +25,51 @@ def ingest(all_docs: bool = False, limit: int | None = None, batch: int = 32, du
     if limit:
         docs = docs[:limit]
     print(f"[ingest] 语料 {len(docs)} 篇")
-    docs, chunks = build_chunks(docs)
-    stats = chunk_stats(chunks)
-    print(f"[ingest] 分块 {stats}")
-    print(f"[ingest] chunk 总数 {len(chunks)}，开始编码 embedding（{EMBED_MODEL}）")
-
-    embedder = Embedder()
-    t_embed = time.time()
-    vectors = embedder.encode([f"{c.section} {c.text}" if c.section else c.text for c in chunks], batch_size=batch)
-    embed_s = time.time() - t_embed
-    print(f"[ingest] embedding 完成，{embed_s:.1f}s（{len(chunks) / max(embed_s, 1e-6):.0f} chunk/s）")
 
     conn = storage.connect()
-    counters = {"inserted_docs": 0, "unchanged_docs": 0, "updated_docs": 0, "inserted_chunks": 0, "skipped_chunks": 0}
+    # 先按 content_hash 判重：内容没变的文档**根本不进编码阶段**——
+    # 否则一次「没有变化」的增量入库仍要付全量 embedding 的钱（实测 2619 chunk 约 350s）。
+    if all_docs:
+        with conn.cursor() as cur:
+            cur.execute("TRUNCATE runs, chunks, documents RESTART IDENTITY CASCADE")
+        conn.commit()
+    pending: list = []
+    skipped_unchanged = 0
+    with conn.cursor() as cur:
+        for d in docs:
+            cur.execute("SELECT content_hash FROM documents WHERE doc_id = %s", (d.doc_id,))
+            row = cur.fetchone()
+            if row is not None and row[0] == d.to_record()["content_hash"]:
+                skipped_unchanged += 1
+                continue
+            pending.append(d)
+    if skipped_unchanged:
+        print(f"[ingest] 内容未变、跳过编码的文档：{skipped_unchanged} 篇")
+
+    docs, chunks = build_chunks(pending)
+    stats = chunk_stats(chunks)
+    print(f"[ingest] 待处理语料 {len(docs)} 篇，分块 {stats}")
+
+    embed_s = 0.0
+    vectors: list[list[float]] = []
+    if chunks:
+        print(f"[ingest] 开始编码 embedding（{EMBED_MODEL}）")
+        embedder = Embedder()
+        t_embed = time.time()
+        vectors = embedder.encode(
+            [f"{c.section} {c.text}" if c.section else c.text for c in chunks], batch_size=batch
+        )
+        embed_s = time.time() - t_embed
+        print(f"[ingest] embedding 完成，{embed_s:.1f}s（{len(chunks) / max(embed_s, 1e-6):.0f} chunk/s）")
+    counters = {
+        "inserted_docs": 0,
+        "unchanged_docs": skipped_unchanged,
+        "updated_docs": 0,
+        "inserted_chunks": 0,
+        "skipped_chunks": 0,
+    }
     try:
         with conn.cursor() as cur:
-            if all_docs:
-                cur.execute("TRUNCATE runs, chunks, documents RESTART IDENTITY CASCADE")
             by_doc: dict[str, list[int]] = {}
             for i, c in enumerate(chunks):
                 by_doc.setdefault(c.doc_id, []).append(i)
