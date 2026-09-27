@@ -44,3 +44,5 @@ eval/dataset/_draft/rejected.jsonl
 # --- gh CLI 本地缓存（工作区沙箱内） ---
 .gh-cache/
 eval/results/degrade_*_answers.jsonl
+eval/results/eval_gate.json
+eval/results/badcase_gate.md

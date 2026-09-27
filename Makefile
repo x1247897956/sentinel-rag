@@ -48,7 +48,15 @@ eval-fast:
 		--configs vector fts hybrid hybrid_rerank --no-generate --tag fast
 
 gate:
-	$(UV) run python -m src.eval.runner --configs hybrid_rerank --baseline eval/baseline.json --tag gate
+	@# 与 CI（.github/workflows/eval.yml）完全同一条路径：检索真跑、生成指标由冻结快照重算。
+	@# 这里**不生成**，所以不会覆盖 eval/snapshot/ 下被核对过的证据；早先用
+	@# `runner --baseline`（默认会跑生成）的写法会顺手改写快照，等于"检查的同时改掉证物"。
+	$(UV) run python -m src.eval.runner --configs hybrid_rerank --no-generate --tag gate
+	$(UV) run python -m src.eval.gate \
+		--retrieval eval/results/eval_gate.json \
+		--answers eval/snapshot/answers.jsonl \
+		--judge eval/snapshot/judge.jsonl \
+		--baseline eval/baseline.json
 
 serve:
 	$(UV) run uvicorn src.service.app:app --host 127.0.0.1 --port 8000
