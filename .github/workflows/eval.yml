@@ -47,6 +47,12 @@ jobs:
         with:
           path: data/corpus
           key: corpus-${{ hashFiles('eval/snapshot/corpus_manifest.json') }}
+      - name: 缓存 embedding 向量
+        # 键 = 语料快照清单 + embedding 模型；命中时入库只需数秒（否则 CPU 全量编码约 6.5 分钟）
+        uses: actions/cache@v4
+        with:
+          path: data/cache
+          key: embeddings-${{ hashFiles('eval/snapshot/corpus_manifest.json') }}-bge-m3
       - run: uv sync --extra local-models
 
       - name: 下载 embedding / 重排模型
