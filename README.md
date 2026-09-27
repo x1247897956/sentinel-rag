@@ -1,6 +1,6 @@
 # SentinelRAG —— 安全知识库检索 Agent：混合检索 + chunk 级引用溯源 + 分层评测
 
-> 本仓库是「**Agent 工程三件套**」之一：`sentinel-rag`（**检索正确性**）· [`silver-guard`](https://github.com/x1247897956/silver-guard)（决策可控性）· [`dsh-llm-guard`](https://github.com/x1247897956/dsh-llm-guard)（输入输出安全）。
+> 本仓库是「**Agent 工程三件套**」之一：`sentinel-rag`（**检索正确性**）· `silver-guard`（决策可控性，仓库待开源）· [`dsh-llm-guard`](https://github.com/x1247897956/dsh-llm-guard)（输入输出安全）。
 
 **它解决什么问题**：安全知识（CVE 影响版本、GHSA 修复版本、ATT&CK 技术点、OWASP 防护要点）
 散在多个公开来源、且大多是英文；直接问一个大模型，它会给你一个**看起来对但版本号可能编的**答案。
