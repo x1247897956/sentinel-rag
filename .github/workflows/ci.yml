@@ -41,19 +41,19 @@ jobs:
         with:
           python-version: "3.11"
       - run: uv sync --extra dev
+      - name: 安装 psql 客户端
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client >/dev/null
+
       - name: 建表（验证 init.sql 与 pgvector 可用）
         env:
           PGPASSWORD: sentinel
-        run: |
-          docker run --rm --network host -v "$PWD/sql/init.sql:/init.sql:ro" \
-            -e PGPASSWORD=sentinel pgvector/pgvector:pg16 \
-            psql -h localhost -U sentinel -d sentinel -f /init.sql
+        run: psql -h localhost -U sentinel -d sentinel -f sql/init.sql
       - name: 校验表与索引
         env:
           PGPASSWORD: sentinel
         run: |
-          docker run --rm --network host -e PGPASSWORD=sentinel pgvector/pgvector:pg16 \
-            psql -h localhost -U sentinel -d sentinel -c "\dt" -c "select extname, extversion from pg_extension;"
+          psql -h localhost -U sentinel -d sentinel -c "\dt"
+          psql -h localhost -U sentinel -d sentinel -c "select extname, extversion from pg_extension;"
       - name: 存储层单测（连真实 Postgres）
         env:
           DATABASE_URL: postgresql://sentinel:sentinel@localhost:5432/sentinel

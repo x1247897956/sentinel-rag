@@ -62,10 +62,13 @@ jobs:
         # 若 sha256 与快照不一致，说明语料被改动 —— 直接 fail，不静默重抓（否则等于偷偷换数据集）
         run: uv run python scripts/prepare_corpus.py --verify-only
 
+      - name: 安装 psql 客户端
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client >/dev/null
+
       - name: 建表
-        run: docker run --rm --network host -v "$PWD/sql/init.sql:/init.sql:ro" \
-              -e PGPASSWORD=sentinel pgvector/pgvector:pg16 \
-              psql -h localhost -U sentinel -d sentinel -f /init.sql
+        env:
+          PGPASSWORD: sentinel
+        run: psql -h localhost -U sentinel -d sentinel -f sql/init.sql
 
       - name: 增量入库（jieba 预分词 + BGE 编码）
         run: uv run python -m src.ingest.ingest
