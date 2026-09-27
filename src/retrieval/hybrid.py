@@ -216,7 +216,9 @@ class Retriever:
                 c.text = meta.get("text", "")
                 c.meta = meta
 
-            if mode == "hybrid_rerank":
+            # ⚠️ 负对照实验（仅存在于本次 PR，不合并）：故意关掉重排，用来验证
+            # eval.yml 的指标门禁真的会拦住「重排掉线」。
+            if mode == "hybrid_rerank" and False:
                 if rerank_backend == "score_fusion":
                     # 用两路召回分数归一化后加权重排：不引入额外模型、确定性、毫秒级
                     _apply_score_fusion(pool, SCORE_FUSION_WEIGHTS)
