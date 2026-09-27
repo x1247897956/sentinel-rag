@@ -1,4 +1,5 @@
 name: ci
+run-name: lint + 单测 + pgvector 建表验证
 
 on:
   push:
