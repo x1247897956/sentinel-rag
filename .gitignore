@@ -35,3 +35,8 @@ reports/*.html
 
 # --- HF / uv 缓存（本地可复现用，不进仓库） ---
 .hf-cache/
+
+# --- 评测中间产物（体积大、可重跑；快照与结果保留） ---
+eval/results/traces_*.json
+eval/results/rows_*.jsonl
+eval/dataset/_draft/rejected.jsonl

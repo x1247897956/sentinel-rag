@@ -1,0 +1,34 @@
+{
+  "fetched_at": "2026-09-26T02:44:41Z",
+  "sources": {
+    "cve": {
+      "source": "CVEProject/cvelistV5",
+      "source_type": "cve_list_v5",
+      "documents": 320,
+      "sha256": "3ce6e2f47319fbcd9a8c09a8ad70ccb0b9670f505ddf5e84e00215925e320961",
+      "bytes": 396695
+    },
+    "ghsa": {
+      "source": "github/advisory-database",
+      "source_type": "ghsa",
+      "documents": 120,
+      "sha256": "d776a405c7d96bff77f2df7c5e3e0c109f43495d1d6281b6f30e15c0c514d00f",
+      "bytes": 169585
+    },
+    "attack": {
+      "source": "mitre-attack/attack-stix-data",
+      "source_type": "attack_stix",
+      "documents": 60,
+      "sha256": "1802e7e452e7206c10177cb8094023623f1fe6a20b2f35371619fd247b8f6883",
+      "bytes": 117824
+    },
+    "owasp": {
+      "source": "OWASP/CheatSheetSeries",
+      "source_type": "owasp_cheatsheet",
+      "documents": 42,
+      "sha256": "1fe2817eb6901d366c9a9cd50a2e2f58e331c35af309918282182b5c89bb312c",
+      "bytes": 893599
+    }
+  },
+  "total_documents": 542
+}

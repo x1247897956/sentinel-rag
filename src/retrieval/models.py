@@ -118,7 +118,7 @@ class LLMClient:
         messages: list[dict[str, str]],
         temperature: float = 0.0,
         max_tokens: int = 800,
-        retries: int = 3,
+        retries: int = 5,
         timeout: float = 120.0,
     ) -> dict[str, Any]:
         if not self.api_key:
@@ -155,7 +155,7 @@ class LLMClient:
                 return data
             except Exception as exc:  # noqa: BLE001
                 last_err = exc
-                time.sleep(1.5 * (attempt + 1))
+                time.sleep(2.0 * (attempt + 1))
         raise RuntimeError(f"LLM 调用失败（重试 {retries} 次）：{last_err}")
 
     def text(self, messages: list[dict[str, str]], **kw) -> str:

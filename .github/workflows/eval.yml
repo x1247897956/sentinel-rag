@@ -1,0 +1,91 @@
+name: eval
+
+# 评测门禁（诚实说明）：
+#   - 检索指标（recall@5 / recall@10 / MRR@10）在 CI 里**真实跑**：建库 → 入库 → 四组对照检索；
+#   - 生成指标（引用命中率 / 引用幻觉率 / 拒答正确率 / 要点覆盖率）由**冻结的模型回答快照**
+#     `eval/snapshot/answers.jsonl` + `eval/snapshot/judge.jsonl` **确定性重算**。
+#     这样做的原因：生成阶段需要 LLM API key，而 CI 的安全做法是不放长期密钥；
+#     快照里每条都带 answer / citations / allowed_ids / refused / gold_chunk_ids，任何人可复核。
+#     本地 `make eval` 会用真实 API 重跑并覆盖快照，结果写进 docs/eval-report.md。
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  regression-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: sentinel
+          POSTGRES_PASSWORD: sentinel
+          POSTGRES_DB: sentinel
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U sentinel -d sentinel"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      DATABASE_URL: postgresql://sentinel:sentinel@localhost:5432/sentinel
+      HF_HOME: ${{ github.workspace }}/.hf-cache
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.11"
+      - name: 缓存 BGE 模型
+        uses: actions/cache@v4
+        with:
+          path: .hf-cache
+          key: hf-bge-small-zh-v1.5-reranker-base-v1
+      - name: 缓存语料快照
+        uses: actions/cache@v4
+        with:
+          path: data/corpus
+          key: corpus-${{ hashFiles('eval/snapshot/corpus_manifest.json') }}
+      - run: uv sync --extra local-models
+
+      - name: 下载 embedding / 重排模型
+        run: |
+          uv run python - <<'PY'
+          from huggingface_hub import snapshot_download
+          for r in ["BAAI/bge-small-zh-v1.5", "BAAI/bge-reranker-base"]:
+              snapshot_download(r)
+          PY
+
+      - name: 准备语料（按快照清单校验 sha256，不一致则重新抓取）
+        run: |
+          uv run python scripts/prepare_corpus.py --verify-only || uv run python -m src.ingest.fetch_corpus
+          uv run python scripts/prepare_corpus.py --verify-only
+
+      - name: 建表
+        run: docker run --rm --network host -v "$PWD/sql/init.sql:/init.sql:ro" \
+              -e PGPASSWORD=sentinel pgvector/pgvector:pg16 \
+              psql -h localhost -U sentinel -d sentinel -f /init.sql
+
+      - name: 增量入库（jieba 预分词 + BGE 编码）
+        run: uv run python -m src.ingest.ingest
+
+      - name: 四组对照检索指标（确定性，不调 LLM）
+        run: |
+          uv run python -m src.eval.runner \
+            --configs vector fts hybrid hybrid_rerank --no-generate \
+            --out eval/results/ci_retrieval.json --tag ci_retrieval
+
+      - name: 生成指标（由冻结回答快照确定性重算）+ 门禁
+        run: |
+          uv run python -m src.eval.gate \
+            --retrieval eval/results/ci_retrieval.json \
+            --answers eval/snapshot/answers.jsonl \
+            --judge eval/snapshot/judge.jsonl \
+            --baseline eval/baseline.json
+
+      - name: 上传评测产物
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: eval/results/

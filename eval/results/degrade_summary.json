@@ -1,0 +1,46 @@
+[
+  {
+    "experiment": "E1 候选池 30 → 5",
+    "gate_exit": 1,
+    "gate_verdict": "拦截",
+    "retrieval": {
+      "n_answerable": 74,
+      "recall@5": 0.8514,
+      "recall@10": 0.8514,
+      "mrr@10": 0.791,
+      "first_hit@1": 0.7568
+    },
+    "badcase": {
+      "by_category": {
+        "retrieval_miss": 11,
+        "rerank_misorder": 0,
+        "context_truncated": 0,
+        "generation_halluc": 10
+      },
+      "failed": 21
+    },
+    "badcase_baseline": {
+      "retrieval_miss": 4,
+      "rerank_misorder": 0,
+      "context_truncated": 5,
+      "generation_halluc": 0
+    }
+  },
+  {
+    "experiment": "E2 拒答阈值关掉",
+    "gate_exit": 1,
+    "gate_verdict": "拦截",
+    "retrieval": {
+      "n_answerable": 74,
+      "recall@5": 0.8649,
+      "recall@10": 0.9459,
+      "mrr@10": 0.7345,
+      "first_hit@1": 0.6081
+    },
+    "gate_stdout": [
+      "[gate] 生成指标（来自冻结快照）：{\"n_answerable\": 74, \"n_unanswerable\": 10, \"cite_hit\": 0.9194, \"cite_halluc_rate\": 0.0, \"no_citation_rate\": 0.1622, \"refusal_acc\": 0.0, \"over_refusal\": 0.0, \"points_partial\": 0.7085, \"points_full\": 0.5775, \"faithfulness\": 0.9545, \"judged_items\": 71}",
+      "[gate] ❌ 未通过，掉线项：",
+      "  - refusal_acc: 0.0 < baseline 1.0"
+    ]
+  }
+]

@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.config import EVAL_DIR, get_settings  # noqa: E402
 from src.eval import prompts  # noqa: E402
-from src.eval.runner import aggregate_generation, _trace_from_dict  # noqa: E402
+from src.eval.runner import aggregate_generation  # noqa: E402
 from src.retrieval.hybrid import Retriever, citation_hallucination, extract_citations  # noqa: E402
 from src.retrieval.models import Embedder, LLMClient, Reranker  # noqa: E402
 

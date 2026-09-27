@@ -1,10 +1,10 @@
 {
   "main_config": "hybrid_rerank",
   "tolerance": 0.02,
-  "baseline_note": "基线 = docs/eval-report.md 记录的那次完整评测（84 条，含生成与判分）",
+  "baseline_note": "基线 = docs/eval-report.md 记录的那次完整评测（tag=v3，84 条，含生成与判分）",
   "dataset_sha256": "dfcd615a2fd617ae4f5f0d20888ab8ac6c399c2f0f124a6d808ed917c5b3030a",
   "n_items": 84,
-  "ran_at": "2026-09-26T21:18:27",
+  "ran_at": "2026-09-27T09:05:21",
   "env": {
     "embed_model": "BAAI/bge-m3",
     "rerank": "score_fusion(weights={'vector': 1.0, 'fts': 3.0})",
@@ -46,18 +46,18 @@
         }
       },
       "system": {
-        "p50_latency_ms": 943.0,
-        "p95_latency_ms": 1832.0,
-        "p50_retrieval_ms": 150.0,
-        "p95_retrieval_ms": 592.0,
+        "p50_latency_ms": 1055.0,
+        "p95_latency_ms": 2104.0,
+        "p50_retrieval_ms": 129.0,
+        "p95_retrieval_ms": 257.0,
         "p50_rerank_ms": 2.0,
-        "p95_rerank_ms": 7.0,
-        "p50_gen_ms": 898.0,
-        "p95_gen_ms": 1794.0,
-        "avg_prompt_tokens": 539.8,
-        "avg_completion_tokens": 66.4,
-        "total_prompt_tokens": 45345,
-        "total_completion_tokens": 5580
+        "p95_rerank_ms": 2.0,
+        "p50_gen_ms": 953.0,
+        "p95_gen_ms": 1977.0,
+        "avg_prompt_tokens": 833.9,
+        "avg_completion_tokens": 93.2,
+        "total_prompt_tokens": 70045,
+        "total_completion_tokens": 7831
       },
       "generation": {
         "n_answerable": 74,
@@ -68,9 +68,9 @@
         "refusal_acc": 1.0,
         "over_refusal": 0.0405,
         "no_citation_rate": 0.1216,
-        "points_partial": 0.7237,
-        "points_full": 0.6056,
-        "faithfulness": 0.9014
+        "points_partial": 0.7085,
+        "points_full": 0.5775,
+        "faithfulness": 0.9545
       },
       "attribution": {
         "total_cases": 84,

@@ -1,0 +1,12 @@
+{
+  "n": 16,
+  "agree": 15,
+  "agreement_rate": 0.9375,
+  "disagreements": [
+    [
+      "q044",
+      0.0,
+      0.6
+    ]
+  ]
+}
