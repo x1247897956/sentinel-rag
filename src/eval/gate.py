@@ -99,8 +99,24 @@ def main() -> int:
         answers = load_jsonl(args.answers)
         dataset_path = Path(__file__).resolve().parents[2] / "eval/dataset/regression_set.jsonl"
         dataset = load_jsonl(dataset_path)
-        expected = {item["qid"]: item.get("gold_chunk_ids", []) for item in dataset}
-        actual = {item["qid"]: item.get("gold_chunk_ids", []) for item in answers}
+        expected = {
+            item["qid"]: (
+                item.get("question"),
+                item.get("category"),
+                item.get("answerable", True),
+                item.get("gold_chunk_ids", []),
+            )
+            for item in dataset
+        }
+        actual = {
+            item["qid"]: (
+                item.get("question"),
+                item.get("category"),
+                item.get("answerable", True),
+                item.get("gold_chunk_ids", []),
+            )
+            for item in answers
+        }
         if len(actual) != len(answers) or actual != expected:
             print("[gate] ❌ 回答快照的 qid/gold 标注与当前回归集不完全一致")
             return 2

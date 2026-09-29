@@ -23,7 +23,8 @@
     "token_budget": 2600,
     "refusal_min_fts": 0.008,
     "refusal_min_cosine": 0.62,
-    "prompt_version": "answer-zh-v1.0"
+    "prompt_version": "answer-zh-v1.0",
+    "requested_gen_model": "deepseek-chat"
   },
   "results": {
     "vector": {
@@ -935,7 +936,6 @@
   },
   "ran_at": "2026-09-29T11:06:13",
   "actual_gen_models": [
-    "deepseek-chat",
     "deepseek-flash"
   ],
   "actual_generation_calls": 85
