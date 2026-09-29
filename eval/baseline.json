@@ -1,13 +1,12 @@
 {
   "main_config": "hybrid_rerank",
   "tolerance": 0.02,
-  "baseline_note": "基线 = docs/eval-report.md 记录的那次完整评测（tag=v5，100 条，含生成与判分）",
   "dataset_sha256": "9f6a6bec0e6b6576d746bec55e7c4ee4aa3873e7ab6c47c0a90878811e011544",
   "n_items": 100,
-  "ran_at": "2026-09-27T16:29:16",
+  "ran_at": "2026-09-29T11:06:13",
   "env": {
     "embed_model": "BAAI/bge-m3",
-    "rerank": "score_fusion(weights={'vector': 1.0, 'fts': 3.0})",
+    "rerank": "BAAI/bge-reranker-base",
     "gen_model": "deepseek-chat",
     "judge_model": "deepseek-v4-pro",
     "chunk_target": 420,
@@ -23,64 +22,15 @@
     "hybrid_rerank": {
       "retrieval": {
         "n_answerable": 88,
-        "recall@5": 0.8864,
-        "recall@10": 0.9545,
-        "mrr@10": 0.7319,
-        "first_hit@1": 0.6136
-      },
-      "retrieval_by_category": {
-        "concept": {
-          "n": 25,
-          "recall@5": 0.84,
-          "mrr@10": 0.7833
-        },
-        "multi_hop": {
-          "n": 8,
-          "recall@5": 0.625,
-          "mrr@10": 0.1786
-        },
-        "single_hop": {
-          "n": 55,
-          "recall@5": 0.9455,
-          "mrr@10": 0.7889
-        }
-      },
-      "system": {
-        "p50_latency_ms": 1098.0,
-        "p95_latency_ms": 2199.0,
-        "p50_retrieval_ms": 134.0,
-        "p95_retrieval_ms": 311.0,
-        "p50_rerank_ms": 2.0,
-        "p95_rerank_ms": 3.0,
-        "p50_gen_ms": 1017.0,
-        "p95_gen_ms": 2049.0,
-        "avg_prompt_tokens": 948.3,
-        "avg_completion_tokens": 107.3,
-        "total_prompt_tokens": 94830,
-        "total_completion_tokens": 10727
+        "recall@5": 0.5,
+        "recall@10": 0.6477,
+        "mrr@10": 0.4418,
+        "first_hit@1": 0.375
       },
       "generation": {
-        "n_answerable": 88,
-        "n_unanswerable": 12,
-        "n_refused_on_answerable": 3,
-        "cite_hit": 0.9315,
+        "cite_hit": 0.9286,
         "cite_halluc_rate": 0.0,
-        "refusal_acc": 1.0,
-        "over_refusal": 0.0341,
-        "no_citation_rate": 0.1364,
-        "points_partial": 0.7178,
-        "points_full": 0.6118,
-        "faithfulness": 0.8987
-      },
-      "attribution": {
-        "total_cases": 100,
-        "failed": 9,
-        "by_category": {
-          "retrieval_miss": 4,
-          "rerank_misorder": 0,
-          "context_truncated": 5,
-          "generation_halluc": 0
-        }
+        "refusal_acc": 1.0
       }
     }
   }

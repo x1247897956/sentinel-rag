@@ -41,7 +41,7 @@ ingest-all:
 eval:
 	$(UV) run python -m src.eval.runner \
 		--configs vector fts hybrid hybrid_rerank \
-		--judge --tag local
+		--rerank-backend cross_encoder --tag local
 
 eval-fast:
 	$(UV) run python -m src.eval.runner \
@@ -55,7 +55,6 @@ gate:
 	$(UV) run python -m src.eval.gate \
 		--retrieval eval/results/eval_gate.json \
 		--answers eval/snapshot/answers.jsonl \
-		--judge eval/snapshot/judge.jsonl \
 		--baseline eval/baseline.json
 
 serve:

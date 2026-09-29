@@ -3,11 +3,11 @@ run-name: 评测门禁（指标掉线即 fail）
 
 # 评测门禁（诚实说明）：
 #   - 检索指标（recall@5 / recall@10 / MRR@10）在 CI 里**真实跑**：建库 → 入库 → 四组对照检索；
-#   - 生成指标（引用命中率 / 引用幻觉率 / 拒答正确率 / 要点覆盖率）由**冻结的模型回答快照**
-#     `eval/snapshot/answers.jsonl` + `eval/snapshot/judge.jsonl` **确定性重算**。
+#   - 生成指标（引用命中率 / 引用幻觉率 / 拒答正确率）由**冻结的模型回答快照**
+#     `eval/snapshot/answers.jsonl` **确定性重算**。
 #     这样做的原因：生成阶段需要 LLM API key，而 CI 的安全做法是不放长期密钥；
 #     快照里每条都带 answer / citations / allowed_ids / refused / gold_chunk_ids，任何人可复核。
-#     本地 `make eval` 会用真实 API 重跑并覆盖快照，结果写进 docs/eval-report.md。
+#     本地 `make eval` 会用真实 API 重跑并覆盖回答快照；要点语义覆盖与忠实度需人工评审，CI 不冒充自动判分。
 on:
   push:
     branches: [main]
@@ -94,7 +94,6 @@ jobs:
           uv run python -m src.eval.gate \
             --retrieval eval/results/ci_retrieval.json \
             --answers eval/snapshot/answers.jsonl \
-            --judge eval/snapshot/judge.jsonl \
             --baseline eval/baseline.json
 
       - name: 上传评测产物

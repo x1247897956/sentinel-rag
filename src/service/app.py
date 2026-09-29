@@ -19,6 +19,7 @@ from src.config import (
     RECALL_TOPK,
     REFUSAL_MIN_COSINE,
     REFUSAL_MIN_FTS,
+    RERANK_BACKEND,
     RERANK_MODEL,
     get_settings,
 )
@@ -91,6 +92,7 @@ def health() -> dict:
         "models": {
             "embed": EMBED_MODEL,
             "rerank": RERANK_MODEL,
+            "rerank_backend": RERANK_BACKEND,
             "generate": settings.gen_model,
         },
         "llm_key_configured": bool(settings.deepseek_api_key),
@@ -111,6 +113,7 @@ def ask(req: AskRequest) -> AskResponse:
         token_budget=req.token_budget,
         refusal_min_fts=req.refusal_min_fts,
         refusal_min_cosine=req.refusal_min_cosine,
+        rerank_backend=RERANK_BACKEND,
     )
     from src.eval.prompts import REFUSAL_TEXT
 
@@ -132,14 +135,14 @@ def ask(req: AskRequest) -> AskResponse:
             prompt_tokens=0,
             completion_tokens=0,
             prompt_version=PROMPT_VERSION,
-            models={"embed": EMBED_MODEL, "rerank": RERANK_MODEL},
+            models={"embed": EMBED_MODEL, "rerank": RERANK_MODEL, "rerank_backend": RERANK_BACKEND},
         )
 
     llm = _state.get("llm") or LLMClient(model=get_settings().gen_model)
     gen = retriever.answer(req.question, trace, llm)
     from src.retrieval.hybrid import citation_hallucination
 
-    halluc = citation_hallucination(gen["citations"], trace.retrieved)
+    halluc = citation_hallucination(gen["citations"], [c.chunk_id for c in trace.context])
     latency = trace.total_ms + gen["latency_ms"]
     # 每次问答落 runs 表：模型 + prompt 版本一起落库，否则指标变化无法归因
     conn = _state.get("conn") or storage.connect()
@@ -156,8 +159,10 @@ def ask(req: AskRequest) -> AskResponse:
                     "citations": gen["citations"],
                     "prompt_version": PROMPT_VERSION,
                     "embed_model": EMBED_MODEL,
-                    "rerank_model": RERANK_MODEL if req.mode == "hybrid_rerank" else None,
-                    "gen_model": llm.model,
+                    "rerank_model": (
+                        RERANK_MODEL if RERANK_BACKEND == "cross_encoder" else RERANK_BACKEND
+                    ) if req.mode == "hybrid_rerank" else None,
+                    "gen_model": gen.get("actual_gen_model", llm.model),
                     "latency_ms": latency,
                     "retrieval_ms": trace.total_ms,
                     "rerank_ms": trace.rerank_ms,
@@ -187,7 +192,12 @@ def ask(req: AskRequest) -> AskResponse:
         prompt_tokens=gen["usage"].get("prompt_tokens", 0),
         completion_tokens=gen["usage"].get("completion_tokens", 0),
         prompt_version=PROMPT_VERSION,
-        models={"embed": EMBED_MODEL, "rerank": RERANK_MODEL, "generate": llm.model},
+        models={
+            "embed": EMBED_MODEL,
+            "rerank": RERANK_MODEL,
+            "rerank_backend": RERANK_BACKEND,
+            "generate": gen.get("actual_gen_model", llm.model),
+        },
     )
 
 

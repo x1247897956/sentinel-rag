@@ -39,8 +39,9 @@ def generation_metrics(answers: list[dict], judge: list[dict] | None = None) -> 
     )
     halluc = sum(
         1
-        for a in answered
-        if [c for c in a.get("citations", []) if c not in set(a.get("allowed_ids", []))]
+        for a in answerable
+        if a.get("hallucinated_citations")
+        or [c for c in a.get("citations", []) if c not in set(a.get("allowed_ids", []))]
     )
     out = {
         "n_answerable": len(answerable),
@@ -91,17 +92,33 @@ def main() -> int:
     for cfg, r in results.items():
         print(f"  {cfg:14s} {json.dumps(r['retrieval'], ensure_ascii=False)}")
 
-    if args.answers and args.answers.exists():
+    if args.answers:
+        if not args.answers.is_file():
+            print(f"[gate] ❌ 回答快照不存在：{args.answers}")
+            return 2
         answers = load_jsonl(args.answers)
-        judge = load_jsonl(args.judge) if args.judge and args.judge.exists() else None
+        dataset_path = Path(__file__).resolve().parents[2] / "eval/dataset/regression_set.jsonl"
+        dataset = load_jsonl(dataset_path)
+        expected = {item["qid"]: item.get("gold_chunk_ids", []) for item in dataset}
+        actual = {item["qid"]: item.get("gold_chunk_ids", []) for item in answers}
+        if len(actual) != len(answers) or actual != expected:
+            print("[gate] ❌ 回答快照的 qid/gold 标注与当前回归集不完全一致")
+            return 2
+        judge = None
+        if args.judge:
+            if not args.judge.is_file():
+                print(f"[gate] ❌ 判分快照不存在：{args.judge}")
+                return 2
+            judge = load_jsonl(args.judge)
+            judge_qids = [item.get("qid") for item in judge]
+            if len(set(judge_qids)) != len(judge_qids) or not set(judge_qids) <= set(actual):
+                print("[gate] ❌ 判分快照包含重复或不在回答快照中的 qid")
+                return 2
         metrics["generation"] = generation_metrics(answers, judge)
         print(f"[gate] 生成指标（来自冻结快照）：{json.dumps(metrics['generation'], ensure_ascii=False)}")
-    elif args.baseline.exists():
-        # 没有新快照时，用基线里的生成指标参与比较（保证门禁维度完整）
-        baseline = json.loads(args.baseline.read_text(encoding="utf-8"))
-        base = baseline.get("results", {}).get(baseline.get("main_config", args.main_config), {})
-        if "generation" in base:
-            metrics["generation"] = base["generation"]
+    else:
+        print("[gate] ❌ 必须提供本次回答快照；禁止复制基线生成指标充当本次指标")
+        return 2
 
     baseline = json.loads(args.baseline.read_text(encoding="utf-8"))
     base_metrics = baseline.get("results", {}).get(baseline.get("main_config", args.main_config), baseline)

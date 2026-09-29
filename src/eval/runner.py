@@ -32,7 +32,9 @@ from src.config import (
     RECALL_TOPK,
     REFUSAL_MIN_COSINE,
     REFUSAL_MIN_FTS,
+    RERANK_BACKEND,
     RERANK_MODEL,
+    ROOT,
     get_settings,
 )
 from src.eval import attribution as attr
@@ -167,14 +169,15 @@ def run_config(
                         "answer": gen["answer"],
                         "citations": gen["citations"],
                         "allowed_ids": gen.get("allowed_ids", []),
+                        "hallucinated_citations": gen.get("hallucinated_citations", []),
                         "refused": gen["refused"],
                         "top_score": trace.top_score,
                         "top_chunk": trace.context[0].chunk_id if trace.context else None,
-                        "gen_model": llm.model if llm else None,
+                        "gen_model": gen.get("actual_gen_model", llm.model if llm else None),
                         "prompt_version": prompts.PROMPT_VERSION,
                     }
                 )
-            if judge_sink is not None and item.get("gold_points") and not gen.get("refused"):
+            if judge_sink is not None and judge and judge_llm is not None and item.get("gold_points") and not gen.get("refused"):
                 judge_sink.append(
                     {
                         "qid": item["qid"],
@@ -225,15 +228,22 @@ def generate_answer(
     answer = (resp["choices"][0]["message"]["content"] or "").strip()
     citations = extract_citations(answer)
     allowed = [c.chunk_id for c in trace.context]
-    halluc = citation_hallucination(citations, trace.retrieved)
+    halluc = citation_hallucination(citations, allowed)
+    citation_valid = bool(citations) and not halluc
+    raw_answer = None
+    if not citation_valid:
+        raw_answer = answer
+        answer = prompts.REFUSAL_TEXT
+        citations = []
     gold = set(item.get("gold_chunk_ids", []))
     cite_hit = None
     if citations:
         cite_hit = 1.0 if (set(citations) & gold) else 0.0
     out: dict[str, Any] = {
         "answer": answer,
+        "raw_answer": raw_answer,
         "citations": citations,
-        "refused": False,
+        "refused": not citation_valid,
         "cite_hit": cite_hit,
         "cite_halluc": bool(halluc),
         "hallucinated_citations": halluc,
@@ -245,6 +255,7 @@ def generate_answer(
         "gen_latency_ms": gen_ms,
         "latency_ms": trace.total_ms + gen_ms,
         "prompt_version": prompts.PROMPT_VERSION,
+        "actual_gen_model": resp.get("model", llm.model),
     }
     if judge and judge_llm is not None and item.get("gold_points"):
         try:
@@ -282,7 +293,7 @@ def aggregate_generation(rows: list[dict]) -> dict[str, Any]:
         "cite_hit": round(sum(r["cite_hit"] for r in with_cites if r.get("cite_hit") is not None) / len(with_cites), 4)
         if with_cites
         else None,
-        "cite_halluc_rate": round(sum(1 for r in answered if r.get("cite_halluc")) / len(answerable), 4)
+        "cite_halluc_rate": round(sum(1 for r in answerable if r.get("cite_halluc")) / len(answerable), 4)
         if answerable
         else None,
         "refusal_acc": round(sum(1 for r in unanswerable if r.get("refused")) / len(unanswerable), 4)
@@ -313,6 +324,16 @@ def check_gate(metrics: dict, baseline: dict, tolerance: float = 0.02) -> tuple[
     b_ret = baseline.get("retrieval", {})
     b_gen = baseline.get("generation", {})
     b_sys = baseline.get("system", {})
+
+    # A missing metric must fail closed; absence is not evidence of no regression.
+    for section, current, expected in (
+        ("retrieval", ret, b_ret),
+        ("generation", gen, b_gen),
+        ("system", sysm, b_sys),
+    ):
+        for key, baseline_value in expected.items():
+            if baseline_value is not None and current.get(key) is None:
+                violations.append(f"{section}.{key}: 本次评测缺少指标")
 
     for key in ("recall@5", "mrr@10", "recall@10", "first_hit@1"):
         if key in b_ret and key in ret and ret[key] < b_ret[key] - tolerance:
@@ -382,10 +403,12 @@ def main() -> int:
     ap.add_argument("--token-budget", type=int, default=CONTEXT_TOKEN_BUDGET)
     ap.add_argument("--refusal-min-fts", type=float, default=REFUSAL_MIN_FTS)
     ap.add_argument("--refusal-min-cosine", type=float, default=REFUSAL_MIN_COSINE)
-    ap.add_argument("--rerank-backend", default="score_fusion", choices=["score_fusion", "cross_encoder", "llm"])
+    ap.add_argument("--rerank-backend", default=RERANK_BACKEND, choices=["score_fusion", "cross_encoder", "llm"])
     ap.add_argument("--baseline", type=Path, default=None)
     ap.add_argument("--out", type=Path, default=None)
     ap.add_argument("--tag", default=None, help="结果文件名后缀，用于标记不同实验")
+    ap.add_argument("--snapshot-dir", type=Path, default=EVAL_DIR / "snapshot",
+                    help="生成回答与判分快照写入目录；使用独立路径可保留现有冻结证据")
     ap.add_argument("--phase", default="all", choices=["all", "retrieval", "generation"],
                     help="retrieval=只跑四种配置的检索指标并缓存轨迹；generation=复用轨迹只跑生成+判分")
     args = ap.parse_args()
@@ -474,7 +497,9 @@ def main() -> int:
         "eval_id": str(uuid.uuid4()),
         "configs": args.configs,
         "main_config": main_cfg,
-        "dataset": str(args.dataset),
+        "dataset": str(args.dataset.resolve().relative_to(ROOT))
+        if args.dataset.resolve().is_relative_to(ROOT)
+        else str(args.dataset),
         "dataset_sha256": ds_sha,
         "n_items": len(items),
         "git_sha": git_sha(),
@@ -494,6 +519,10 @@ def main() -> int:
             "refusal_min_cosine": args.refusal_min_cosine,
             "prompt_version": prompts.PROMPT_VERSION,
         },
+        "actual_gen_models": sorted({
+            r.get("actual_gen_model") for r in rows_by_config.get(args.generate_config, [])
+            if r.get("actual_gen_model")
+        }),
         "results": results,
         "ran_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
     }
@@ -509,7 +538,7 @@ def main() -> int:
     print(f"[eval] 结果落盘 → {out_path}")
 
     # 冻结快照：CI 用它在无密钥的前提下确定性重算生成指标
-    snap_dir = EVAL_DIR / "snapshot"
+    snap_dir = args.snapshot_dir
     if answer_sink:
         snap_dir.mkdir(parents=True, exist_ok=True)
         with open(snap_dir / "answers.jsonl", "w", encoding="utf-8") as fh:

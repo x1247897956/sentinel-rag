@@ -162,7 +162,7 @@ class Retriever:
         token_budget: int = CONTEXT_TOKEN_BUDGET,
         refusal_min_fts: float = REFUSAL_MIN_FTS,
         refusal_min_cosine: float = REFUSAL_MIN_COSINE,
-        rerank_backend: str = "score_fusion",
+        rerank_backend: str = "cross_encoder",
         llm: LLMClient | None = None,
     ) -> Trace:
         if mode not in MODES:
@@ -313,14 +313,26 @@ class Retriever:
         )
         text = (resp["choices"][0]["message"]["content"] or "").strip()
         citations = extract_citations(text)
+        allowed_ids = [c.chunk_id for c in trace.context]
+        hallucinated = citation_hallucination(citations, allowed_ids)
+        # Treat missing or out-of-context citations as an unsupported answer and fail closed.
+        citation_valid = bool(citations) and not hallucinated
+        raw_answer = None
+        if not citation_valid:
+            raw_answer = text
+            text = "知识库中没有依据，不能回答该问题。"
+            citations = []
         return {
             "answer": text,
+            "raw_answer": raw_answer,
             "citations": citations,
-            "refused": False,
+            "refused": not citation_valid,
+            "hallucinated_citations": hallucinated,
             "prompt_version": prompt_version,
             "usage": resp.get("_usage", {}),
             "latency_ms": int((time.time() - t0) * 1000),
             "gen_model": llm.model,
+            "actual_gen_model": resp.get("model", llm.model),
             "finish_reason": resp["choices"][0].get("finish_reason"),
         }
 
@@ -416,4 +428,3 @@ class CitationTracker:
             for r in self.rows:
                 fh.write(_json.dumps(r, ensure_ascii=False) + "\n")
         self.path = p
-

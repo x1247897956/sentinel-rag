@@ -19,6 +19,7 @@ CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "80"))
 
 EMBED_MODEL = os.getenv("EMBED_MODEL", "BAAI/bge-m3")
 RERANK_MODEL = os.getenv("RERANK_MODEL", "BAAI/bge-reranker-base")
+RERANK_BACKEND = os.getenv("RERANK_BACKEND", "cross_encoder")
 EMBED_DIM = 1024
 
 RECALL_TOPK = int(os.getenv("RECALL_TOPK", "30"))
